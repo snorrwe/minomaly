@@ -6,9 +6,7 @@ project(${MINOMALY} VERSION 0.1.0 LANGUAGES CXX)
 
 #[ library ]
 
-add_library(${MINOMALY} ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
-                        ${PROJECT_SOURCE_DIR}/src/entity.cpp
-    )
+add_library(${MINOMALY} ${PROJECT_SOURCE_DIR}/src/minomaly.cpp)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
