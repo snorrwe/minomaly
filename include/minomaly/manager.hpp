@@ -61,12 +61,12 @@ public:
         auto removed =
             std::find_if(components.begin(), components.end(),
                          [id](auto const& component) { return std::get<0>(component) == id; });
-        if (removed != components.end())
+        auto result = removed != components.end();
+        if (result)
         {
             components.erase(removed);
-            return true;
         }
-        return false;
+        return result;
     }
 
     /// Apply a function to all components in the `Manager`
