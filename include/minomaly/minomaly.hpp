@@ -1,8 +1,8 @@
 #pragma once
-#include "minomaly/component.hpp"
-#include "minomaly/entity.hpp"
-#include "minomaly/manager.hpp"
-#include "minomaly/system.hpp"
+#include "component.hpp"
+#include "entity.hpp"
+#include "manager.hpp"
+#include "system.hpp"
 #include <memory>
 #include <vector>
 
