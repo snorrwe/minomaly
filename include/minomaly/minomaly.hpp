@@ -30,10 +30,7 @@ public:
     void remove_entity(EntityId id);
     void update();
 
-    std::vector<Entity> const& get_entities() const
-    {
-        return entities;
-    }
+    std::vector<Entity> const& get_entities() const;
 
 private:
     std::vector<std::unique_ptr<IManager>> managers;

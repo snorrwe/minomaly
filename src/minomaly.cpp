@@ -34,3 +34,8 @@ Entity& Minomaly::add_entity()
     return result;
 }
 
+std::vector<Entity> const& Minomaly::get_entities() const
+{
+    return entities;
+}
+
