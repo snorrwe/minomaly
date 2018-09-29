@@ -9,6 +9,7 @@ project(${MINOMALY} VERSION 0.1.0 LANGUAGES CXX)
 add_library(${MINOMALY} ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
                         ${PROJECT_SOURCE_DIR}/src/window_system.cpp
                         ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
+                        ${PROJECT_SOURCE_DIR}/src/input_system.cpp
 )
 target_include_directories(${MINOMALY} PUBLIC
     $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/lib>

@@ -1,6 +1,7 @@
 #include "minomaly/minomaly.hpp"
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
+#include "minomaly/input_system.hpp"
 #include <algorithm>
 
 using namespace mino;
@@ -27,6 +28,7 @@ void Minomaly::init()
 {
     create_system<SdlSubsystems>();
     create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
+    create_system<InputSystem>();
 }
 
 void Minomaly::stop()
