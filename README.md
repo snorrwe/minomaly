@@ -26,7 +26,7 @@ build\Debug\app.exe # on Windows
 ## Basic concepts
 
 - `Entity`: An entity in the game, does not implement anything special, it's just an identifier to find _components_ that are linked together
-- `Component`: Holds the data of an _entity_ required by some functionality
+- `Component`: Holds the data of an _entity_ required by some functionality. Components should not hold resources, let _systems_ handle that
 - `System`: Implements functionality. Generally used to iterate on _entities_ or just _components_
 - `Manager`: Manages memory and lifetimes of _entities_
 

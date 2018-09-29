@@ -55,7 +55,9 @@ public:
     }
 
     /// Erase the component belonging to the entity
-    /// Returns if a component was found by this id
+    /// Returns if a component was found and removed by this id
+    /// Note that Component destructor will be called twice
+    /// Because it's necessary to do a swap operation
     bool remove_component(EntityId id)
     {
         auto removed =
@@ -64,7 +66,11 @@ public:
         auto result = removed != components.end();
         if (result)
         {
-            components.erase(removed);
+            // Move the removed element to the end of the vector
+            // So the when the dtor is called it will use the correct memory
+            // location
+            std::iter_swap(removed, components.rbegin());
+            components.erase(--components.end());
         }
         return result;
     }

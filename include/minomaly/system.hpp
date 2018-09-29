@@ -8,7 +8,13 @@ public:
     virtual ~ISystem()
     {
     }
-    virtual void update() = 0;
+
+    virtual void start()
+    {
+    }
+    virtual void update()
+    {
+    }
 };
 } // namespace mino
 

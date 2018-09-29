@@ -11,6 +11,29 @@ void Minomaly::update()
     }
 }
 
+void Minomaly::start()
+{
+    running = true;
+    for (auto& system : systems)
+    {
+        system->start();
+    }
+}
+
+void Minomaly::stop()
+{
+    running = false;
+}
+
+void Minomaly::run()
+{
+    start();
+    while (running)
+    {
+        update();
+    }
+}
+
 void Minomaly::remove_entity(EntityId id)
 {
     auto removed = std::find_if(entities.begin(), entities.end(),
@@ -34,7 +57,7 @@ Entity& Minomaly::add_entity()
     return result;
 }
 
-std::vector<Entity> const& Minomaly::get_entities() const
+Minomaly::EntityContainer const& Minomaly::get_entities() const
 {
     return entities;
 }
