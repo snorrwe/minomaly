@@ -70,7 +70,7 @@ public:
                 auto old = component.value;
                 auto current = ++component.value;
                 std::cout << "Updating component of entity [" << entity_id << "]\n"
-                          << "Old id: " << old << " new id: " << current << "\n";
+                          << "Old value: " << old << " new value: " << current << "\n";
             });
         }
 

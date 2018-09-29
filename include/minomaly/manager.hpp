@@ -56,8 +56,8 @@ public:
 
     /// Erase the component belonging to the entity
     /// Returns if a component was found and removed by this id
-    /// Note that Component destructor will be called twice
-    /// Because it's necessary to do a swap operation
+    /// Note that when the Component destructor is called `this` will point to different memory
+    /// from it's original. For this reason and more Components should not manage resources
     bool remove_component(EntityId id)
     {
         auto removed =
@@ -66,11 +66,7 @@ public:
         auto result = removed != components.end();
         if (result)
         {
-            // Move the removed element to the end of the vector
-            // So when the dtor is called it will use the correct memory
-            // location
-            std::iter_swap(removed, components.rbegin());
-            components.erase(--components.end());
+            components.erase(removed);
         }
         return result;
     }
