@@ -52,6 +52,8 @@ private:
     EntityContainer entities;
 
     bool running = false;
+
+    void init();
 };
 
 template <typename TSys, typename... Args>
