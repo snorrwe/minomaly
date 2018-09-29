@@ -67,7 +67,7 @@ public:
         if (result)
         {
             // Move the removed element to the end of the vector
-            // So the when the dtor is called it will use the correct memory
+            // So when the dtor is called it will use the correct memory
             // location
             std::iter_swap(removed, components.rbegin());
             components.erase(--components.end());
