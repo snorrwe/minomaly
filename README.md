@@ -5,6 +5,15 @@
 - [C++17 compatible compiler](https://en.cppreference.com/w/cpp/compiler_support) (e.g. MSVC 19+)
 - [CMake 3.0+](https://cmake.org/)
 
+## Pulling submodules
+
+This repository makes use of [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) be sure to initialize your submodules
+
+```
+git submodule init
+git submodule update
+```
+
 ## Initializing CMake
 
 ```
