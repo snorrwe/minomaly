@@ -26,3 +26,20 @@ WindowSystem::~WindowSystem()
     }
 }
 
+WindowSystem::WindowSystem(WindowSystem&& other)
+{
+    window = other.window;
+    surface = other.surface;
+    // Make sure the `other` dtor does not close the window
+    other.window = nullptr;
+}
+
+WindowSystem& WindowSystem::operator=(WindowSystem&& other)
+{
+    window = other.window;
+    surface = other.surface;
+    // Make sure the `other` dtor does not close the window
+    other.window = nullptr;
+    return *this;
+}
+

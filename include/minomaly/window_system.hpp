@@ -15,6 +15,11 @@ class WindowSystem final : public ISystem
 public:
     WindowSystem(const char* title, int x, int y, int w, int h, int flag);
     virtual ~WindowSystem();
+    WindowSystem(WindowSystem &&);
+    WindowSystem& operator=(WindowSystem &&);
+
+    WindowSystem(WindowSystem const&) = delete;
+    WindowSystem& operator=(WindowSystem const&) = delete;
 };
 } // namespace mino
 
