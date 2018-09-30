@@ -1,7 +1,7 @@
 #include "minomaly/minomaly.hpp"
+#include "minomaly/input_system.hpp"
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
-#include "minomaly/input_system.hpp"
 #include <algorithm>
 
 using namespace mino;
@@ -71,5 +71,10 @@ Entity& Minomaly::add_entity()
 Minomaly::EntityContainer const& Minomaly::get_entities() const
 {
     return entities;
+}
+
+void Minomaly::add_manager(std::unique_ptr<IManager>&& manager)
+{
+    managers.push_back(std::move(manager));
 }
 

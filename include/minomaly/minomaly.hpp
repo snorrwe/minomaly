@@ -22,29 +22,25 @@ public:
 
     /// Run the game loop
     void run();
+    void stop();
 
     template <typename TSys, typename... Args>
     TSys* create_system(Args&&... args);
 
-    // TODO: make managers internal by default?
-    // TODO: add option to define custom manager
+    template <typename TSys>
+    TSys* get_system() const;
+
+    void add_manager(std::unique_ptr<IManager>&&);
+
     template <typename TComponent>
     Manager<TComponent>* create_component_manager();
-
-    Entity& add_entity();
-    void remove_entity(EntityId id);
-
-    void start();
-    void update();
-    void stop();
-
-    EntityContainer const& get_entities() const;
 
     template <typename TManager>
     TManager* get_manager() const;
 
-    template <typename TSys>
-    TSys* get_system() const;
+    Entity& add_entity();
+    void remove_entity(EntityId id);
+    EntityContainer const& get_entities() const;
 
 private:
     ManagerContainer managers;
@@ -54,6 +50,8 @@ private:
     bool running = false;
 
     void init();
+    void start();
+    void update();
 };
 
 template <typename TSys, typename... Args>
