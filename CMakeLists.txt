@@ -12,7 +12,7 @@ add_library(${MINOMALY} ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
                         ${PROJECT_SOURCE_DIR}/src/input_system.cpp
 )
 target_include_directories(${MINOMALY} PUBLIC
-    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/lib>
+    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/external/log4cplus/include>
 )
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -22,6 +22,10 @@ if(MSVC)
 else(MSVC)
     target_compile_options(${MINOMALY} PRIVATE -Wall -Wextra -pedantic -Werror)
 endif(MSVC)
+
+#[ log4cplus ]
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/log4cplus)
 
 #[ SDL ]
 
