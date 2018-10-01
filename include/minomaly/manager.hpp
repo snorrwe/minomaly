@@ -1,4 +1,5 @@
 #pragma once
+#include "entity.hpp"
 #include <algorithm>
 #include <cassert>
 #include <memory>

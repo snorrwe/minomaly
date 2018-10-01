@@ -2,6 +2,7 @@
 #include "minomaly/input_system.hpp"
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
+#include "minomaly/log_manager.hpp"
 #include <algorithm>
 
 using namespace mino;
@@ -26,6 +27,7 @@ void Minomaly::start()
 
 void Minomaly::init()
 {
+    add_manager(std::make_unique<LogManager>());
     create_system<SdlSubsystems>();
     create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
     create_system<InputSystem>();

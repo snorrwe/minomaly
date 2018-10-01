@@ -11,13 +11,13 @@ add_library(${MINOMALY} STATIC
                         ${PROJECT_SOURCE_DIR}/src/window_system.cpp
                         ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
                         ${PROJECT_SOURCE_DIR}/src/input_system.cpp
+                        ${PROJECT_SOURCE_DIR}/src/log_manager.cpp
 )
 target_include_directories(${MINOMALY}
-    PUBLIC
+PUBLIC
     $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
-
-    PRIVATE
+PRIVATE
     ${PROJECT_SOURCE_DIR}/src
 )
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
@@ -28,19 +28,6 @@ if(MSVC)
 else(MSVC)
     target_compile_options(${MINOMALY} PRIVATE -Wall -Wextra -pedantic -Werror)
 endif(MSVC)
-
-#[ log4cplus ]
-
-if(WIN32)
-    set(Win32)
-    set(log4cplus_EXPORTS)
-    set(UNICODE)
-    set(_UNICODE)
-endif()
-set(LOG4CPLUS_BUILD_TESTING  OFF)
-set(WITH_UNIT_TESTS   OFF)
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/log4cplus)
-target_link_libraries(${MINOMALY} ${log4cplus})
 
 #[ SDL ]
 
@@ -64,12 +51,6 @@ include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_DIR}/include)
 include_directories(${SDL2_TTF_DIR}/include)
 include_directories(${SDL2_MIXER_DIR}/include)
-
-target_link_libraries(${MINOMALY} ${SDL2_LIBRARIES}
-                                  ${SDL2_IMAGE_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_image.lib 
-                                  ${SDL2_MIXER_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_mixer.lib
-                                  ${SDL2_TTF_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_ttf.lib
-)
 
 MACRO(COPY_SDL_DLLS name)
       # SDL core
@@ -96,6 +77,14 @@ MACRO(COPY_SDL_DLLS name)
               "${SDL2_MIXER_DIR}/${VC_LIB_PATH_SUFFIX}"
               $<TARGET_FILE_DIR:${name}>)
 ENDMACRO()
+
+#[ Link external dependencies ]
+
+target_link_libraries(${MINOMALY} ${SDL2_LIBRARIES}
+                                  ${SDL2_IMAGE_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_image.lib 
+                                  ${SDL2_MIXER_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_mixer.lib
+                                  ${SDL2_TTF_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_ttf.lib
+)
 
 #[ Tests ]
 
