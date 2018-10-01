@@ -34,9 +34,9 @@ public:
     TComponent& add_component(EntityId id)
     {
         // "Only a single component is allowed per entity"
-        assert(find_if(components.begin(), components.end(), [id](auto const& component) {
-                   return std::get<0>(component) == id;
-               }) == components.end());
+        assert(components.end() ==
+               find_if(components.begin(), components.end(),
+                       [id](auto const& component) { return std::get<0>(component) == id; }));
         auto& result = components.emplace_back();
         std::get<0>(result) = id;
         return std::get<1>(result);
