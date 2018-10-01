@@ -6,13 +6,19 @@ project(${MINOMALY} VERSION 0.1.0 LANGUAGES CXX)
 
 #[ Engine ]
 
-add_library(${MINOMALY} ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
+add_library(${MINOMALY} STATIC
+                        ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
                         ${PROJECT_SOURCE_DIR}/src/window_system.cpp
                         ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
                         ${PROJECT_SOURCE_DIR}/src/input_system.cpp
 )
-target_include_directories(${MINOMALY} PUBLIC
-    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/external/log4cplus/include>
+target_include_directories(${MINOMALY}
+    PUBLIC
+    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
 )
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -25,7 +31,16 @@ endif(MSVC)
 
 #[ log4cplus ]
 
+if(WIN32)
+    set(Win32)
+    set(log4cplus_EXPORTS)
+    set(UNICODE)
+    set(_UNICODE)
+endif()
+set(LOG4CPLUS_BUILD_TESTING  OFF)
+set(WITH_UNIT_TESTS   OFF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/external/log4cplus)
+target_link_libraries(${MINOMALY} ${log4cplus})
 
 #[ SDL ]
 
@@ -87,6 +102,6 @@ ENDMACRO()
 add_executable(app ${PROJECT_SOURCE_DIR}/test/test_app.cpp)
 set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
-target_link_libraries(app ${MINOMALY})
+target_link_libraries(app PRIVATE ${MINOMALY})
 COPY_SDL_DLLS(app)
 
