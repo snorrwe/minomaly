@@ -32,7 +32,7 @@ else()
 endif()
 
 if(WIN32)
-  set(SDL2_ROOT ${PROJECT_SOURCE_DIR}/lib/sdl/windows-vs)
+  set(SDL2_ROOT ${PROJECT_SOURCE_DIR}/external/sdl/windows-vs)
   set(SDL2_DIR ${SDL2_ROOT}/SDL2-2.0.7)
   set(SDL2_IMAGE_DIR ${SDL2_ROOT}/SDL2_image-2.0.2)
   set(SDL2_TTF_DIR ${SDL2_ROOT}/SDL2_ttf-2.0.14)
