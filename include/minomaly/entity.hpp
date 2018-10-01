@@ -9,7 +9,6 @@ using EntityId = size_t;
 struct Entity
 {
     EntityId id;
-    size_t flag;
 };
 
 } // namespace mino
