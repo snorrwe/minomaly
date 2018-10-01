@@ -32,7 +32,6 @@ public:
         return false;
     }
 
-    // TODO: should this use EntityId instead of `const char*`?
     Logger* get_logger(const char* logger = DEFAULT_LOGGER);
 };
 } // namespace mino
