@@ -78,6 +78,10 @@ MACRO(COPY_SDL_DLLS name)
               $<TARGET_FILE_DIR:${name}>)
 ENDMACRO()
 
+#[ Spdlog ]
+
+include_directories(${PROJECT_SOURCE_DIR}/external/spdlog/include)
+
 #[ Link external dependencies ]
 
 target_link_libraries(${MINOMALY} ${SDL2_LIBRARIES}
