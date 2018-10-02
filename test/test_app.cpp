@@ -23,8 +23,8 @@ public:
         , component_manager(engine.create_component_manager<ExampleComponent>())
         , logger(engine.get_log_manager()->get_logger("example app"))
     {
-        logger->debug("Created ExampleSystem");
         assert(component_manager);
+        logger->debug("Created ExampleSystem");
     }
 
     virtual ~ExampleSystem()
