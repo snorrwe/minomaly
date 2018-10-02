@@ -11,7 +11,7 @@ add_library(${MINOMALY} STATIC
                         ${PROJECT_SOURCE_DIR}/src/window_system.cpp
                         ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
                         ${PROJECT_SOURCE_DIR}/src/input_system.cpp
-                        ${PROJECT_SOURCE_DIR}/src/log_manager.cpp
+                        ${PROJECT_SOURCE_DIR}/src/logger.cpp
 )
 target_include_directories(${MINOMALY}
 PUBLIC

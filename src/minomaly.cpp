@@ -1,6 +1,5 @@
 #include "minomaly/minomaly.hpp"
 #include "minomaly/input_system.hpp"
-#include "minomaly/log_manager.hpp"
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
 #include <algorithm>

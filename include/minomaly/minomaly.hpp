@@ -1,7 +1,7 @@
 #pragma once
 #include "entity.hpp"
 #include "manager.hpp"
-#include "minomaly/log_manager.hpp"
+#include "minomaly/logger.hpp"
 #include "system.hpp"
 #include <memory>
 #include <vector>
