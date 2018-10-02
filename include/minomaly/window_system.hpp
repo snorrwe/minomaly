@@ -20,6 +20,9 @@ public:
 
     WindowSystem(WindowSystem const&) = delete;
     WindowSystem& operator=(WindowSystem const&) = delete;
+
+    SDL_Window* get_window() const;
+    SDL_Surface* get_surface() const;
 };
 } // namespace mino
 

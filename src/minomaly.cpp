@@ -3,35 +3,43 @@
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
 #include <algorithm>
+#include <chrono>
 
 using namespace mino;
+using milliseconds = std::chrono::duration<double, std::milli>;
 
 void Minomaly::update()
 {
+    logger->debug("Engine update starting");
+    auto start = std::chrono::system_clock::now();
     for (auto& system : systems)
     {
         system->update();
     }
+    milliseconds elapsed = std::chrono::system_clock::now() - start;
+    logger->debug("Engine update finished in {} ms", elapsed.count());
 }
 
 void Minomaly::start()
 {
+    logger->debug("Starting...");
+    auto start = std::chrono::system_clock::now();
     init();
     running = true;
     for (auto& system : systems)
     {
         system->start();
     }
+    milliseconds elapsed = std::chrono::system_clock::now() - start;
+    logger->debug("Starting finished in {} ms", elapsed.count());
 }
 
 void Minomaly::init()
 {
-    logger->debug("Initializing...");
     add_manager(std::move(log_manager));
     create_system<SdlSubsystems>();
     create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
     create_system<InputSystem>();
-    logger->debug("Initialization finished");
 }
 
 void Minomaly::stop()
@@ -87,7 +95,7 @@ LogManager* Minomaly::get_log_manager() const
 }
 
 Minomaly::Minomaly()
-    :logger(log_manager->get_logger("minomaly"))
+    : logger(log_manager->get_logger("minomaly"))
 {
     logger->debug("Created Minomaly");
 }
