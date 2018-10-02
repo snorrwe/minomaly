@@ -43,3 +43,13 @@ WindowSystem::~WindowSystem()
     }
 }
 
+SDL_Window* WindowSystem::get_window() const
+{
+    return window;
+}
+
+SDL_Surface* WindowSystem::get_surface() const
+{
+    return surface;
+}
+
