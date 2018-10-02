@@ -7,6 +7,10 @@ InputSystem::InputSystem()
     current_events.reserve(10);
 }
 
+InputSystem::~InputSystem()
+{
+}
+
 void InputSystem::update()
 {
     current_events.clear();
@@ -28,5 +32,10 @@ void InputSystem::update()
             break;
         }
     }
+}
+
+std::vector<Event> const& InputSystem::get_events() const
+{
+    return current_events;
 }
 
