@@ -16,13 +16,15 @@ class ExampleSystem final : public mino::ISystem
     uint8_t updates = 0;
 
 public:
-    ExampleSystem(mino::Minomaly& engine, mino::Manager<ExampleComponent>* component_manager)
+    ExampleSystem(mino::Minomaly& engine)
         : engine(engine)
-        , component_manager(component_manager)
+        , component_manager(engine.create_component_manager<ExampleComponent>())
         , logger(engine.get_log_manager()->get_logger("example app"))
     {
         logger->debug("Created ExampleSystem");
+        assert(component_manager);
     }
+
     virtual ~ExampleSystem()
     {
         logger->debug("Destroying ExampleSystem");
@@ -31,6 +33,7 @@ public:
     void start()
     {
         logger->info("Starting ExampleSystem");
+        component_manager->reserve(5);
         for (int i = 1; i <= 5; ++i)
         {
             auto entity = engine.add_entity();
@@ -78,12 +81,7 @@ int main()
 
     // Initialize
     auto engine = mino::Minomaly();
-    /* auto manager = */ engine.create_component_manager<ExampleComponent>();
-    auto manager = engine.get_manager<mino::Manager<ExampleComponent>>();
-    assert(manager != nullptr);
-    manager->reserve(5);
-    /* auto system = */ engine.create_system<ExampleSystem>(engine, manager);
-    auto system = engine.get_system<ExampleSystem>();
+    auto system = engine.create_system<ExampleSystem>(engine);
     assert(system != nullptr);
 
     engine.run();
