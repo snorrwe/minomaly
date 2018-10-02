@@ -5,22 +5,13 @@
 struct ExampleComponent
 {
     size_t value;
-
-    ExampleComponent()
-    {
-        std::cout << "Creating an example component\n";
-    }
-
-    ~ExampleComponent()
-    {
-        std::cout << "Destroying an example component. Value: " << value << "\n";
-    }
 };
 
 class ExampleSystem final : public mino::ISystem
 {
     mino::Minomaly& engine;
     mino::Manager<ExampleComponent>* component_manager;
+    mino::Logger* logger;
 
     uint8_t updates = 0;
 
@@ -28,16 +19,19 @@ public:
     ExampleSystem(mino::Minomaly& engine, mino::Manager<ExampleComponent>* component_manager)
         : engine(engine)
         , component_manager(component_manager)
+        , logger(engine.get_log_manager()->get_logger("example app"))
     {
+        logger->debug("Created ExampleSystem");
     }
     virtual ~ExampleSystem()
     {
+        logger->debug("Destroying ExampleSystem");
     }
 
     void start()
     {
-        std::cout << "Starting ExampleSystem\n";
-        for (int i = 0; i < 5; ++i)
+        logger->info("Starting ExampleSystem");
+        for (int i = 1; i <= 5; ++i)
         {
             auto entity = engine.add_entity();
             component_manager->add_component(entity.id).value = i * 100;
@@ -46,14 +40,14 @@ public:
 
     void update()
     {
-        std::cout << "-----Updating ExampleSystem-----\n";
+        logger->info("-----Updating ExampleSystem-----");
         if (updates == 2)
         {
             bool deleted = false;
             component_manager->iter([&deleted, this](auto entity_id, auto& component) {
                 if (!deleted)
                 {
-                    std::cout << "Removing entity by id [" << entity_id << "]\n";
+                    logger->info("Removing entity by id [{}]", entity_id);
                     engine.remove_entity(entity_id);
                     deleted = true;
                 }
@@ -61,16 +55,16 @@ public:
         }
         else if (updates == 4)
         {
-            std::cout << "Stop the engine from the ExampleSystem\n";
+            logger->info("Stopping the engine from the ExampleSystem");
             engine.stop();
         }
         else
         {
-            component_manager->iter([](auto entity_id, auto& component) {
+            component_manager->iter([this](auto entity_id, auto& component) {
                 auto old = component.value;
                 auto current = ++component.value;
-                std::cout << "Updating component of entity [" << entity_id << "]\n"
-                          << "Old value: " << old << " new value: " << current << "\n";
+                logger->info("Updating component of entity [{}] Old value: [{}] new value: [{}]",
+                             entity_id, old, current);
             });
         }
 
@@ -80,6 +74,8 @@ public:
 
 int main()
 {
+    mino::LogManager::set_level(mino::LogLevel::debug);
+
     // Initialize
     auto engine = mino::Minomaly();
     /* auto manager = */ engine.create_component_manager<ExampleComponent>();

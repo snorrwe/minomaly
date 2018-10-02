@@ -1,6 +1,7 @@
 #pragma once
 #include "entity.hpp"
 #include "manager.hpp"
+#include "minomaly/log_manager.hpp"
 #include "system.hpp"
 #include <memory>
 #include <vector>
@@ -9,15 +10,14 @@ namespace mino
 {
 class Minomaly
 {
-
 public:
     using EntityContainer = std::vector<Entity>;
     using SystemContainer = std::vector<std::unique_ptr<ISystem>>;
     using ManagerContainer = std::vector<std::unique_ptr<IManager>>;
 
-    Minomaly() = default;
+    Minomaly();
+    ~Minomaly();
     Minomaly(Minomaly const&) = delete;
-    ~Minomaly() = default;
     Minomaly& operator=(Minomaly const&) = delete;
 
     /// Run the game loop
@@ -42,12 +42,17 @@ public:
     void remove_entity(EntityId id);
     EntityContainer const& get_entities() const;
 
+    LogManager* get_log_manager() const;
+
 private:
     ManagerContainer managers;
     SystemContainer systems;
     EntityContainer entities;
 
     bool running = false;
+    Logger* logger = nullptr;
+
+    inline static std::unique_ptr<LogManager> log_manager = std::make_unique<LogManager>();
 
     void init();
     void start();

@@ -1,21 +1,26 @@
 #pragma once
-#include "logger.hpp"
 #include "manager.hpp"
+#include "spdlog/spdlog.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
 
 namespace mino
 {
+using Logger = spdlog::logger;
+using LogLevel = spdlog::level::level_enum;
+
 class LogManager : public IManager
 {
     static constexpr const char* DEFAULT_LOGGER = "minomaly";
 
-    std::unordered_map<std::string, std::unique_ptr<Logger>> loggers;
+    std::unordered_map<std::string, std::shared_ptr<Logger>> loggers;
 
 public:
+    static void set_level(LogLevel level);
+
     LogManager();
-    ~LogManager()
+    virtual ~LogManager()
     {
     }
 
