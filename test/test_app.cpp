@@ -7,6 +7,8 @@ struct ExampleComponent
     size_t value;
 };
 
+constexpr size_t N_COMPONENTS = 100;
+
 class ExampleSystem final : public mino::ISystem
 {
     mino::Minomaly& engine;
@@ -30,18 +32,20 @@ public:
         logger->debug("Destroying ExampleSystem");
     }
 
-    void start()
+    virtual void start() override
     {
         logger->info("Starting ExampleSystem");
-        component_manager->reserve(5);
-        for (int i = 1; i <= 5; ++i)
+        logger->info("Creating {} components", N_COMPONENTS);
+        component_manager->reserve(N_COMPONENTS);
+        for (auto i = 1; i <= N_COMPONENTS; ++i)
         {
             auto entity = engine.add_entity();
-            component_manager->add_component(entity.id).value = i * 100;
+            component_manager->add_component(entity.id).value = i * N_COMPONENTS;
         }
+        logger->info("ExampleSystem has started successfully");
     }
 
-    void update()
+    virtual void update() override
     {
         logger->info("-----Updating ExampleSystem-----");
         if (updates == 2)
@@ -50,7 +54,7 @@ public:
             component_manager->iter([&deleted, this](auto entity_id, auto& component) {
                 if (!deleted)
                 {
-                    logger->info("Removing entity by id [{}]", entity_id);
+                    logger->info("Removing entity by id [{:#06x}]", entity_id);
                     engine.remove_entity(entity_id);
                     deleted = true;
                 }
@@ -66,8 +70,6 @@ public:
             component_manager->iter([this](auto entity_id, auto& component) {
                 auto old = component.value;
                 auto current = ++component.value;
-                logger->info("Updating component of entity [{}] Old value: [{}] new value: [{}]",
-                             entity_id, old, current);
             });
         }
 
