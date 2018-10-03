@@ -32,6 +32,12 @@ RenderSystem::RenderSystem(SDL_Window& window, SDL_Surface& surface, Logger* log
 RenderSystem::~RenderSystem()
 {
     logger->debug("Destroying RenderSystem");
+    logger->debug("Destroying SDL_Textures");
+    for (auto& i : textures)
+    {
+        SDL_DestroyTexture(i.second);
+    }
+    logger->debug("Destroying SDL_Renderer");
     SDL_DestroyRenderer(renderer);
 }
 
@@ -51,7 +57,7 @@ void RenderSystem::update()
     logger->debug("RenderSystem update finished");
 }
 
-RenderableEntity RenderSystem::create_renderable_entity(Entity& entity)
+RenderableEntity RenderSystem::create_renderable_entity(Entity const& entity)
 {
     auto& render = render_component_manager.add_component(entity.id);
     auto& position = position_component_manager.add_component(entity.id);
@@ -66,6 +72,11 @@ void RenderSystem::reserve(size_t n)
 
 SDL_Texture* RenderSystem::load_texture(std::string const& name)
 {
+    auto result = textures.find(name);
+    if (result != textures.end())
+    {
+        return result->second;
+    }
     auto media = IMG_Load(name.c_str());
     if (media == nullptr)
     {
@@ -75,8 +86,9 @@ SDL_Texture* RenderSystem::load_texture(std::string const& name)
     auto texture = SDL_CreateTextureFromSurface(renderer, media);
     if (texture == nullptr)
     {
-        logger->error("Unable to optimize image! SDL Error:\n{}", SDL_GetError());
+        logger->error("Unable to optimize image!\nSDL Error: {}", SDL_GetError());
     }
+    textures.insert(std::make_pair(name, texture));
     return texture;
 }
 
