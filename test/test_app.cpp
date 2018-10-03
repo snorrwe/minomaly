@@ -6,7 +6,7 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 1000000;
+constexpr size_t N_COMPONENTS = 100000;
 const size_t WORLD_W = 800;
 const size_t WORLD_H = 600;
 
