@@ -51,7 +51,7 @@ public:
         auto render_system = engine.get_system<RenderSystem>();
         render_system->reserve(N_COMPONENTS);
         auto texture = render_system->load_texture(".data/boii.png");
-        for (auto i = 1; i <= N_COMPONENTS; ++i)
+        for (auto i = 0; i < N_COMPONENTS; ++i)
         {
             auto entity = engine.add_entity();
 
