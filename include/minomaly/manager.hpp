@@ -50,12 +50,11 @@ public:
     /// TODO: fix / ease this issue
     TComponent* get_component(EntityId id)
     {
-        auto guess = [&]() {
-            if (id < components.size())
-                return components.rbegin() + (components.size() - 1 - id);
-            else
-                return components.rbegin();
-        }();
+        auto guess = components.rbegin();
+        if (id < components.size())
+        {
+            guess += components.size() - 1 - id;
+        }
         auto result = std::find_if(guess, components.rend(), [id](auto const& component) {
             return std::get<0>(component) == id;
         });
@@ -64,6 +63,19 @@ public:
             return &std::get<1>(*result);
         }
         return nullptr;
+    }
+
+    /// Get an existing component or add a new one if none was found
+    /// Note that this method has a slight overhead, so if you know for sure wether or not the
+    /// component exists Use the appropriate method for increased performance
+    TComponent& get_or_add_component(EntityId id)
+    {
+        auto existing = get_component(id);
+        if (existing != nullptr)
+        {
+            return *existing;
+        }
+        return add_component(id);
     }
 
     /// Erase the component belonging to the entity

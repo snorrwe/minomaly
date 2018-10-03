@@ -17,7 +17,6 @@ class ExampleSystem final : public ISystem
     Logger* logger;
 
     uint8_t updates = 0;
-
     std::mt19937 rng;
     std::uniform_int_distribution<std::mt19937::result_type> dist_w;
     std::uniform_int_distribution<std::mt19937::result_type> dist_h;
@@ -33,15 +32,15 @@ public:
         logger->debug("Created ExampleSystem");
     }
 
-    virtual ~ExampleSystem()
+    ~ExampleSystem() override
     {
         logger->debug("Destroying ExampleSystem");
     }
 
-    ExampleSystem(ExampleSystem&) = delete;
-    ExampleSystem& operator=(ExampleSystem&) = delete;
+    ExampleSystem(ExampleSystem const&) = delete;
+    ExampleSystem& operator=(ExampleSystem const&) = delete;
 
-    virtual void start() override
+    void start() override
     {
         logger->info("Starting ExampleSystem");
         logger->info("Creating {} components", N_COMPONENTS);
@@ -70,7 +69,7 @@ public:
         logger->info("ExampleSystem has started successfully");
     }
 
-    virtual void update() override
+    void update() override
     {
         logger->info("Updating ExampleSystem");
         constexpr auto limit = 8;
