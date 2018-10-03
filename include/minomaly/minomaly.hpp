@@ -1,7 +1,7 @@
 #pragma once
 #include "entity.hpp"
+#include "logger.hpp"
 #include "manager.hpp"
-#include "minomaly/logger.hpp"
 #include "system.hpp"
 #include <memory>
 #include <vector>
@@ -34,6 +34,9 @@ public:
 
     template <typename TComponent>
     Manager<TComponent>* create_component_manager();
+
+    template <typename TManager>
+    TManager* get_manager();
 
     template <typename TManager>
     TManager* get_manager() const;
@@ -81,6 +84,22 @@ Manager<TComponent>* Minomaly::create_component_manager()
     auto result = manager.get();
     managers.emplace_back(std::move(manager));
     return result;
+}
+
+template <typename TManager>
+TManager* Minomaly::get_manager()
+{
+    auto result = std::find_if(managers.begin(), managers.end(),
+                               [](auto& manager) { return typeid(*manager) == typeid(TManager); });
+    if (result != managers.end())
+    {
+        return static_cast<TManager*>(result->get());
+    }
+    // Else lazy initialize
+    auto manager = std::make_unique<TManager>();
+    auto retval = manager.get();
+    add_manager(std::move(manager));
+    return retval;
 }
 
 template <typename TManager>

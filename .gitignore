@@ -34,3 +34,7 @@
 build/
 
 \.vs/
+
+\.data/
+
+CMakeSettings\.json

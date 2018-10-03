@@ -1,5 +1,6 @@
 #include "minomaly/minomaly.hpp"
 #include "minomaly/input_system.hpp"
+#include "minomaly/render_system.hpp"
 #include "minomaly/sdl_subsystems.hpp"
 #include "minomaly/window_system.hpp"
 #include <algorithm>
@@ -31,15 +32,18 @@ void Minomaly::start()
         system->start();
     }
     milliseconds elapsed = std::chrono::system_clock::now() - start;
-    logger->debug("Starting finished in {} ms", elapsed.count());
+    logger->debug("Startup finished in {} ms", elapsed.count());
 }
 
 void Minomaly::init()
 {
-    add_manager(std::move(log_manager));
     create_system<SdlSubsystems>();
-    create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
     create_system<InputSystem>();
+    auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
+    create_system<RenderSystem>(*window_system->get_window(), *window_system->get_surface(),
+                                log_manager->get_logger("render_system"), entities,
+                                *get_manager<Manager<RenderComponent>>(),
+                                *get_manager<Manager<PositionComponent>>());
 }
 
 void Minomaly::stop()

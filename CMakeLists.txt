@@ -12,6 +12,7 @@ add_library(${MINOMALY} STATIC
                         ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
                         ${PROJECT_SOURCE_DIR}/src/input_system.cpp
                         ${PROJECT_SOURCE_DIR}/src/logger.cpp
+                        ${PROJECT_SOURCE_DIR}/src/render_system.cpp
 )
 target_include_directories(${MINOMALY}
 PUBLIC
@@ -97,4 +98,12 @@ set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(app PRIVATE ${MINOMALY})
 COPY_SDL_DLLS(app)
+add_custom_command(TARGET app POST_BUILD 
+          COMMAND ${CMAKE_COMMAND} -E copy_directory  
+          ${PROJECT_SOURCE_DIR}/test/data
+          ${PROJECT_SOURCE_DIR}/.data)
+add_custom_command(TARGET app POST_BUILD 
+          COMMAND ${CMAKE_COMMAND} -E copy_directory  
+          ${PROJECT_SOURCE_DIR}/test/data
+          $<TARGET_FILE_DIR:app>/.data)
 
