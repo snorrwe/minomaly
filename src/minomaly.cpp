@@ -40,9 +40,10 @@ void Minomaly::init()
     create_system<SdlSubsystems>();
     create_system<InputSystem>();
     auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
-    create_system<RenderSystem>(
-        *window_system->get_window(), log_manager->get_logger("render_system"), entities,
-        *get_manager<Manager<RenderComponent>>(), *get_manager<Manager<PositionComponent>>());
+    create_system<RenderSystem>(*window_system->get_window(), *window_system->get_surface(),
+                                log_manager->get_logger("render_system"), entities,
+                                *get_manager<Manager<RenderComponent>>(),
+                                *get_manager<Manager<PositionComponent>>());
 }
 
 void Minomaly::stop()

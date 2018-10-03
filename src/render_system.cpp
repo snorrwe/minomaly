@@ -1,16 +1,20 @@
 #include "minomaly/render_system.hpp"
 #include "SDL.h"
+#include "SDL_image.h"
 #include "minomaly/minomaly.hpp"
 #include "minomaly/render_component.hpp"
+#include <string>
 
 using namespace mino;
 
-RenderSystem::RenderSystem(SDL_Window& window, Logger* logger, std::vector<Entity>& entities,
+RenderSystem::RenderSystem(SDL_Window& window, SDL_Surface& surface, Logger* logger,
+                           std::vector<Entity>& entities,
                            Manager<RenderComponent>& render_component_manager,
                            Manager<PositionComponent>& position_component_manager)
     // TODO: pass in as params
     : renderer(
           SDL_CreateRenderer(&window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))
+    , surface(&surface)
     , logger(logger)
     , entities(entities)
     , render_component_manager(render_component_manager)
@@ -49,8 +53,30 @@ void RenderSystem::update()
 
 RenderableEntity RenderSystem::create_renderable_entity(Entity& entity)
 {
-    auto render = render_component_manager.add_component(entity.id);
-    auto position = position_component_manager.add_component(entity.id);
+    auto& render = render_component_manager.add_component(entity.id);
+    auto& position = position_component_manager.add_component(entity.id);
     return {render, position};
+}
+
+void RenderSystem::reserve(size_t n)
+{
+    render_component_manager.reserve(n);
+    position_component_manager.reserve(n);
+}
+
+SDL_Texture* RenderSystem::load_texture(std::string const& name)
+{
+    auto media = IMG_Load(name.c_str());
+    if (media == nullptr)
+    {
+        logger->error("Unable to load image [{}]\nError: {}", name, IMG_GetError());
+        return nullptr;
+    }
+    auto texture = SDL_CreateTextureFromSurface(renderer, media);
+    if (texture == nullptr)
+    {
+        logger->error("Unable to optimize image! SDL Error:\n{}", SDL_GetError());
+    }
+    return texture;
 }
 
