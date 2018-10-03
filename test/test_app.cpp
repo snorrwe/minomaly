@@ -5,7 +5,7 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 100000;
+constexpr size_t N_COMPONENTS = 1000000;
 
 class ExampleSystem final : public ISystem
 {

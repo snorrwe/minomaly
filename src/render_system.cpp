@@ -36,10 +36,8 @@ void RenderSystem::update()
     logger->debug("RenderSystem update starting...");
     SDL_RenderClear(renderer);
     render_component_manager.iter([this](auto entity, auto& render_component) {
-        entity;
         auto position = position_component_manager.get_component(entity);
-        assert(position);
-
+        assert(position != nullptr);
         render_component.dest.x = position->x;
         render_component.dest.y = position->y;
         SDL_RenderCopy(renderer, render_component.texture, &render_component.source,
