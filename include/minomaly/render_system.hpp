@@ -6,6 +6,7 @@
 #include "render_component.hpp"
 #include "system.hpp"
 #include <iosfwd>
+#include <unordered_map>
 #include <vector>
 
 struct SDL_Window;
@@ -32,22 +33,22 @@ class RenderSystem final : public ISystem
     Manager<RenderComponent>& render_component_manager;
     Manager<PositionComponent>& position_component_manager;
     std::vector<Entity>& entities;
+    std::unordered_map<std::string, SDL_Texture*> textures;
 
 public:
     RenderSystem(SDL_Window& window, SDL_Surface& surface, Logger* logger,
                  std::vector<Entity>& entities, Manager<RenderComponent>&,
                  Manager<PositionComponent>&);
-    virtual ~RenderSystem();
+    ~RenderSystem() override;
 
-    virtual void update() override;
+    void update() override;
 
     /// Reserve capacity for n >= 0 renderable entities
     void reserve(size_t n);
-    RenderableEntity create_renderable_entity(Entity& entity);
+    RenderableEntity create_renderable_entity(Entity const& entity);
 
     SDL_Texture* load_texture(std::string const& name);
     // TODO:
-    // Texture management
     // load_spritesheet
     // TextureManager
 };
