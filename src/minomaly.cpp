@@ -12,26 +12,26 @@ using milliseconds = std::chrono::duration<double, std::milli>;
 void Minomaly::update()
 {
     logger->debug("Engine update starting");
-    auto start = std::chrono::system_clock::now();
+    auto start = std::chrono::steady_clock::now();
     for (auto& system : systems)
     {
         system->update();
     }
-    milliseconds elapsed = std::chrono::system_clock::now() - start;
+    milliseconds elapsed = std::chrono::steady_clock::now() - start;
     logger->debug("Engine update finished in {} ms", elapsed.count());
 }
 
 void Minomaly::start()
 {
     logger->debug("Starting...");
-    auto start = std::chrono::system_clock::now();
+    auto start = std::chrono::steady_clock::now();
     init();
     running = true;
     for (auto& system : systems)
     {
         system->start();
     }
-    milliseconds elapsed = std::chrono::system_clock::now() - start;
+    milliseconds elapsed = std::chrono::steady_clock::now() - start;
     logger->debug("Startup finished in {} ms", elapsed.count());
 }
 
