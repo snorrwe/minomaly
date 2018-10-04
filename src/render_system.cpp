@@ -7,7 +7,9 @@
 
 using namespace mino;
 
-RenderSystem::RenderSystem(SDL_Window& window, SDL_Surface& surface, Logger* logger,
+RenderSystem::RenderSystem(SDL_Window& window,
+                           SDL_Surface& surface,
+                           Logger* logger,
                            std::vector<Entity>& entities,
                            Manager<RenderComponent>& render_component_manager,
                            Manager<PositionComponent>& position_component_manager)
@@ -50,8 +52,8 @@ void RenderSystem::update()
         assert(position != nullptr);
         render_component.dest.x = position->x;
         render_component.dest.y = position->y;
-        SDL_RenderCopy(renderer, render_component.texture, &render_component.source,
-                       &render_component.dest);
+        SDL_RenderCopy(
+            renderer, render_component.texture, &render_component.source, &render_component.dest);
     });
     SDL_RenderPresent(renderer);
     logger->debug("RenderSystem update finished");

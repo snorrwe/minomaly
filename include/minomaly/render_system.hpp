@@ -36,8 +36,11 @@ class RenderSystem final : public ISystem
     std::unordered_map<std::string, SDL_Texture*> textures;
 
 public:
-    RenderSystem(SDL_Window& window, SDL_Surface& surface, Logger* logger,
-                 std::vector<Entity>& entities, Manager<RenderComponent>&,
+    RenderSystem(SDL_Window& window,
+                 SDL_Surface& surface,
+                 Logger* logger,
+                 std::vector<Entity>& entities,
+                 Manager<RenderComponent>&,
                  Manager<PositionComponent>&);
     ~RenderSystem() override;
 

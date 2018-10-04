@@ -37,8 +37,9 @@ public:
     {
         // "Only a single component is allowed per entity"
         assert(components.end() ==
-               find_if(components.begin(), components.end(),
-                       [id](auto const& component) { return std::get<0>(component) == id; }));
+               find_if(components.begin(), components.end(), [id](auto const& component) {
+                   return std::get<0>(component) == id;
+               }));
         auto& result = components.emplace_back();
         std::get<0>(result) = id;
         return std::get<1>(result);
@@ -85,8 +86,9 @@ public:
     virtual bool remove_component(EntityId id) override
     {
         auto removed =
-            std::find_if(components.begin(), components.end(),
-                         [id](auto const& component) { return std::get<0>(component) == id; });
+            std::find_if(components.begin(), components.end(), [id](auto const& component) {
+                return std::get<0>(component) == id;
+            });
         auto result = removed != components.end();
         if (result)
         {

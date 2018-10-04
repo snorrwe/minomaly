@@ -40,8 +40,10 @@ void Minomaly::init()
     create_system<SdlSubsystems>();
     create_system<InputSystem>();
     auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
-    create_system<RenderSystem>(*window_system->get_window(), *window_system->get_surface(),
-                                log_manager->get_logger("render_system"), entities,
+    create_system<RenderSystem>(*window_system->get_window(),
+                                *window_system->get_surface(),
+                                log_manager->get_logger("render_system"),
+                                entities,
                                 *get_manager<Manager<RenderComponent>>(),
                                 *get_manager<Manager<PositionComponent>>());
 }
@@ -62,8 +64,8 @@ void Minomaly::run()
 
 void Minomaly::remove_entity(EntityId id)
 {
-    auto removed = std::find_if(entities.begin(), entities.end(),
-                                [id](auto const& entity) { return entity.id == id; });
+    auto removed = std::find_if(
+        entities.begin(), entities.end(), [id](auto const& entity) { return entity.id == id; });
     if (removed == entities.end())
     {
         return;
@@ -98,8 +100,7 @@ LogManager* Minomaly::get_log_manager() const
     return log_manager.get();
 }
 
-Minomaly::Minomaly()
-    : logger(log_manager->get_logger("minomaly"))
+Minomaly::Minomaly() : logger(log_manager->get_logger("minomaly"))
 {
     logger->debug("Created Minomaly");
 }
