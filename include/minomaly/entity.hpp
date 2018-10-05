@@ -3,7 +3,7 @@
 namespace mino
 {
 
-using EntityId = size_t;
+using EntityId = unsigned int;
 
 /// Represents properties shared between entities
 struct Entity

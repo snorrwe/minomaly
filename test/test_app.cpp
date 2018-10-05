@@ -45,7 +45,7 @@ public:
         logger->info("Starting ExampleSystem");
         logger->info("Creating {} components", N_COMPONENTS);
 
-        position_component_manager = engine.get_manager<Manager<PositionComponent>>();
+        position_component_manager = engine.get_or_create_manager<Manager<PositionComponent>>();
         assert(position_component_manager != nullptr);
 
         auto render_system = engine.get_system<RenderSystem>();

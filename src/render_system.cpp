@@ -18,9 +18,9 @@ RenderSystem::RenderSystem(SDL_Window& window,
           SDL_CreateRenderer(&window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))
     , surface(&surface)
     , logger(logger)
-    , entities(entities)
     , render_component_manager(render_component_manager)
     , position_component_manager(position_component_manager)
+    , entities(entities)
 {
     if (renderer == nullptr)
     {

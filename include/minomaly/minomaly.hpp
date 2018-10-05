@@ -1,4 +1,5 @@
 #pragma once
+#define SDL_MAIN_HANDLED
 #include "entity.hpp"
 #include "logger.hpp"
 #include "manager.hpp"
