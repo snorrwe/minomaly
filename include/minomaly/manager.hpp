@@ -33,14 +33,15 @@ public:
     }
 
     /// Add a component to the entity by `id` and return a reference to it
-    TComponent& add_component(EntityId id)
+    TComponent& add_component(EntityId const id)
     {
         // "Only a single component is allowed per entity"
         assert(components.end() ==
                find_if(components.begin(), components.end(), [id](auto const& component) {
                    return std::get<0>(component) == id;
                }));
-        auto& result = components.emplace_back();
+        components.emplace_back();
+        auto& result = components.back();
         std::get<0>(result) = id;
         return std::get<1>(result);
     }

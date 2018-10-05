@@ -1,5 +1,7 @@
 # Minomaly engine
 
+[![Build status](https://ci.appveyor.com/api/projects/status/76liyvvyl3x3i4dg/branch/master?svg=true)](https://ci.appveyor.com/project/snorrwe/minomaly/branch/master)
+
 ## Requirements
 
 - [C++17 compatible compiler](https://en.cppreference.com/w/cpp/compiler_support) (e.g. MSVC 19+)

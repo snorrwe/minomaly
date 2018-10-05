@@ -9,6 +9,8 @@
 using namespace mino;
 using milliseconds = std::chrono::duration<double, std::milli>;
 
+std::unique_ptr<LogManager> Minomaly::log_manager = std::make_unique<LogManager>();
+
 void Minomaly::update()
 {
     logger->debug("Engine update starting");
@@ -44,8 +46,8 @@ void Minomaly::init()
                                 *window_system->get_surface(),
                                 log_manager->get_logger("render_system"),
                                 entities,
-                                *get_manager<Manager<RenderComponent>>(),
-                                *get_manager<Manager<PositionComponent>>());
+                                *get_or_create_manager<Manager<RenderComponent>>(),
+                                *get_or_create_manager<Manager<PositionComponent>>());
 }
 
 void Minomaly::stop()
@@ -80,7 +82,8 @@ void Minomaly::remove_entity(EntityId id)
 Entity& Minomaly::add_entity()
 {
     static EntityId NEXT_ID = 0;
-    auto& result = entities.emplace_back();
+    entities.emplace_back();
+    auto& result = entities.back();
     result.id = NEXT_ID++;
     return result;
 }

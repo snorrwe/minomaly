@@ -14,7 +14,7 @@ class ExampleSystem final : public ISystem
 {
     Minomaly& engine;
     Manager<PositionComponent>* position_component_manager = nullptr;
-    Logger* logger;
+    Logger* logger = nullptr;
 
     uint8_t updates = 0;
     std::mt19937 rng;
@@ -45,7 +45,7 @@ public:
         logger->info("Starting ExampleSystem");
         logger->info("Creating {} components", N_COMPONENTS);
 
-        position_component_manager = engine.get_manager<Manager<PositionComponent>>();
+        position_component_manager = engine.get_or_create_manager<Manager<PositionComponent>>();
         assert(position_component_manager != nullptr);
 
         auto render_system = engine.get_system<RenderSystem>();
@@ -72,7 +72,7 @@ public:
     void update() override
     {
         logger->info("Updating ExampleSystem");
-        constexpr auto limit = 8;
+        constexpr auto limit = 32;
         if (updates == limit)
         {
             logger->info("Stopping the engine from the ExampleSystem");
@@ -93,6 +93,8 @@ public:
 
 int main(int argc, char** argv)
 {
+    argc;
+    argv;
     LogManager::set_level(LogLevel::debug);
 
     // Initialize
