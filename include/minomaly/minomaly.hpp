@@ -17,11 +17,14 @@ public:
 
     Minomaly();
     ~Minomaly();
+    Minomaly(Minomaly&&) = default;
+    Minomaly& operator=(Minomaly&&) = default;
     Minomaly(Minomaly const&) = delete;
     Minomaly& operator=(Minomaly const&) = delete;
 
     /// Run the game loop
     void run();
+    /// Stop the game loop
     void stop();
 
     template <typename TSys, typename... Args>
@@ -30,14 +33,19 @@ public:
     template <typename TSys>
     TSys* get_system() const;
 
+    /// Add a previously initialized manager
+    /// Useful when you want to use something other than the default manager implementation
     void add_manager(std::unique_ptr<IManager>&&);
 
+    /// Create the default manager for type of `TComponent` and return a pointer to it
     template <typename TComponent>
     Manager<TComponent>* create_component_manager();
 
+    /// Get the manager of type `TManager` or lazily initialize it if it was not found
     template <typename TManager>
-    TManager* get_manager();
+    TManager* get_or_create_manager();
 
+    /// Get the manager of type `TManager` or return `nullptr` if it was not found
     template <typename TManager>
     TManager* get_manager() const;
 
@@ -87,10 +95,11 @@ Manager<TComponent>* Minomaly::create_component_manager()
 }
 
 template <typename TManager>
-TManager* Minomaly::get_manager()
+TManager* Minomaly::get_or_create_manager()
 {
-    auto result = std::find_if(managers.begin(), managers.end(),
-                               [](auto& manager) { return typeid(*manager) == typeid(TManager); });
+    auto result = std::find_if(managers.begin(), managers.end(), [](auto& manager) {
+        return typeid(*manager) == typeid(TManager);
+    });
     if (result != managers.end())
     {
         return static_cast<TManager*>(result->get());
@@ -105,8 +114,9 @@ TManager* Minomaly::get_manager()
 template <typename TManager>
 TManager* Minomaly::get_manager() const
 {
-    auto result = std::find_if(managers.begin(), managers.end(),
-                               [](auto& manager) { return typeid(*manager) == typeid(TManager); });
+    auto result = std::find_if(managers.begin(), managers.end(), [](auto& manager) {
+        return typeid(*manager) == typeid(TManager);
+    });
     if (result != managers.end())
     {
         return static_cast<TManager*>(result->get());
@@ -117,8 +127,9 @@ TManager* Minomaly::get_manager() const
 template <typename TSys>
 TSys* Minomaly::get_system() const
 {
-    auto result = std::find_if(systems.begin(), systems.end(),
-                               [](auto& system) { return typeid(*system) == typeid(TSys); });
+    auto result = std::find_if(systems.begin(), systems.end(), [](auto& system) {
+        return typeid(*system) == typeid(TSys);
+    });
     if (result != systems.end())
     {
         return static_cast<TSys*>(result->get());
