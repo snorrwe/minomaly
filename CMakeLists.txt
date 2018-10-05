@@ -21,6 +21,7 @@ target_include_directories(${MINOMALY}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     )
+
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
 
@@ -90,7 +91,8 @@ include_directories(${PROJECT_SOURCE_DIR}/external/spdlog/include)
 
 #[ Link external dependencies ]
 
-target_link_libraries(${MINOMALY} ${SDL2_LIBRARIES}
+target_link_libraries(${MINOMALY}
+    ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_image.lib
     ${SDL2_MIXER_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_mixer.lib
     ${SDL2_TTF_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_ttf.lib
@@ -104,12 +106,18 @@ set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(app PRIVATE ${MINOMALY})
 COPY_SDL_DLLS(app)
 # Copy the assets next to the executable and also the parent directory
-add_custom_command(TARGET app POST_BUILD
+add_custom_command(
+    TARGET app
+    POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${PROJECT_SOURCE_DIR}/test/data
-    ${PROJECT_SOURCE_DIR}/.data)
-add_custom_command(TARGET app POST_BUILD
+    ${PROJECT_SOURCE_DIR}/.data
+    )
+add_custom_command(
+    TARGET app
+    POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${PROJECT_SOURCE_DIR}/test/data
-    $<TARGET_FILE_DIR:app>/.data)
+    $<TARGET_FILE_DIR:app>/.data
+    )
 
