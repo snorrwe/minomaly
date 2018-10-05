@@ -9,6 +9,8 @@
 using namespace mino;
 using milliseconds = std::chrono::duration<double, std::milli>;
 
+std::unique_ptr<LogManager> Minomaly::log_manager = std::make_unique<LogManager>();
+
 void Minomaly::update()
 {
     logger->debug("Engine update starting");

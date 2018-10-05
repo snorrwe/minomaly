@@ -63,7 +63,7 @@ private:
     bool running = false;
     Logger* logger = nullptr;
 
-    inline static std::unique_ptr<LogManager> log_manager = std::make_unique<LogManager>();
+    static std::unique_ptr<LogManager> log_manager;
 
     void init();
     void start();
