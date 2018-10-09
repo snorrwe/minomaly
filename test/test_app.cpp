@@ -6,7 +6,7 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 100000;
+constexpr size_t N_COMPONENTS = 1000;
 const size_t WORLD_W = 800;
 const size_t WORLD_H = 600;
 
@@ -53,9 +53,9 @@ public:
         auto texture = render_system->load_texture(".data/boii.png");
         for (auto i = 0; i < N_COMPONENTS; ++i)
         {
-            auto entity = engine.add_entity();
+            auto const& entity = engine.add_entity();
 
-            auto components = render_system->create_renderable_entity(entity);
+            auto& components = render_system->create_renderable_entity(entity);
             components.position.x = 0;
             components.position.y = 0;
             components.render.texture = texture;
@@ -91,10 +91,8 @@ public:
     }
 };
 
-int main(int argc, char** argv)
+int main(int, char**)
 {
-    argc;
-    argv;
     LogManager::set_level(LogLevel::debug);
 
     // Initialize

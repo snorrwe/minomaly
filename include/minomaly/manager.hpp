@@ -27,7 +27,7 @@ class Manager : public IManager
     TComponentContainer components; // TODO: flatmap?
 
 public:
-    virtual void reserve(size_t size) override
+    void reserve(size_t size) override
     {
         components.reserve(size);
     }
@@ -84,7 +84,7 @@ public:
     /// Returns if a component was found and removed by this id
     /// Note that when the Component destructor is called `this` will point to different memory
     /// from it's original. For this reason and more Components should not manage resources
-    virtual bool remove_component(EntityId id) override
+    bool remove_component(EntityId id) override
     {
         auto removed =
             std::find_if(components.begin(), components.end(), [id](auto const& component) {
