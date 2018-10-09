@@ -113,3 +113,11 @@ Minomaly::~Minomaly()
     logger->debug("Destroying Minomaly");
 }
 
+void Minomaly::clear_entities()
+{
+    for (auto& entity : entities)
+    {
+        remove_entity(entity.id);
+    }
+}
+

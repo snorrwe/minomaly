@@ -1,5 +1,4 @@
 #pragma once
-#define SDL_MAIN_HANDLED
 #include "entity.hpp"
 #include "logger.hpp"
 #include "manager.hpp"
@@ -52,6 +51,7 @@ public:
 
     Entity& add_entity();
     void remove_entity(EntityId id);
+    void clear_entities();
     EntityContainer const& get_entities() const;
 
     LogManager* get_log_manager() const;
