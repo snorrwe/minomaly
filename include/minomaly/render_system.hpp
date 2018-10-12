@@ -44,6 +44,11 @@ public:
                  Manager<PositionComponent>&);
     ~RenderSystem() override;
 
+    RenderSystem(RenderSystem const&) = delete;
+    RenderSystem(RenderSystem &&) = delete;
+    RenderSystem& operator=(RenderSystem const&) = delete;
+    RenderSystem& operator=(RenderSystem &&) = delete;
+
     void update() override;
 
     /// Reserve capacity for n >= 0 renderable entities
