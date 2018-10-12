@@ -55,7 +55,7 @@ public:
         {
             auto const& entity = engine.add_entity();
 
-            auto& components = render_system->create_renderable_entity(entity);
+            auto components = render_system->create_renderable_entity(entity);
             components.position.x = 0;
             components.position.y = 0;
             components.render.texture = texture;
