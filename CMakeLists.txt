@@ -26,11 +26,12 @@ set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
 target_compile_features(${MINOMALY} PRIVATE cxx_noexcept)
 
-set(SILENCED_WARNINGS   -Wno-pragmas
-                        -Wno-unused-command-line-argument
-                        -Wno-unknown-argument
-                        -Wno-deprecated-declarations
-                        -Wno-c++17-extensions -Wunknown-warning-option)
+set(SILENCED_WARNINGS -Wno-pragmas
+                      -Wno-unused-command-line-argument
+                      -Wno-unknown-argument
+                      -Wno-deprecated-declarations
+                      -Wno-c++17-extensions
+                      -Wunknown-warning-option)
 if(MSVC)
     if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") # LLVM toolchain support
         target_compile_options(${MINOMALY} PRIVATE /WX ${SILENCED_WARNINGS})
