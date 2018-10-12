@@ -28,21 +28,22 @@ struct RenderableEntity
 class RenderSystem final : public ISystem
 {
     SDL_Renderer* renderer;
-    SDL_Surface* surface;
     Logger* logger;
     Manager<RenderComponent>& render_component_manager;
     Manager<PositionComponent>& position_component_manager;
-    std::vector<Entity>& entities;
     std::unordered_map<std::string, SDL_Texture*> textures;
 
 public:
     RenderSystem(SDL_Window& window,
-                 SDL_Surface& surface,
                  Logger* logger,
-                 std::vector<Entity>& entities,
                  Manager<RenderComponent>&,
                  Manager<PositionComponent>&);
     ~RenderSystem() override;
+
+    RenderSystem(RenderSystem const&) = delete;
+    RenderSystem(RenderSystem &&) = delete;
+    RenderSystem& operator=(RenderSystem const&) = delete;
+    RenderSystem& operator=(RenderSystem &&) = delete;
 
     void update() override;
 

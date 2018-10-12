@@ -28,18 +28,17 @@ install:
   - cmake --version
 
   # Setup the path to Clang-cl   
-  # - set PATH="C:\Program Files\LLVM\bin";%PATH%
-  # - clang-cl -v
+  - set PATH="C:\Program Files\LLVM\bin";%PATH%
+  - clang-cl -v
 
 before_build:
-  - del "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0" /F /Q # Hack: Delete unsupported SDK
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
 
 build_script:
   - cd C:\projects\minomaly
   - mkdir build
   - cd build
-  - cmake .. -GNinja # -DCMAKE_CXX_COMPILER=clang-cl
+  - cmake .. -GNinja -DCMAKE_CXX_COMPILER=clang-cl
   - cmake --build . --config %CONFIGURATION%
 
 # test_script:
