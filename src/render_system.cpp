@@ -8,19 +8,15 @@
 using namespace mino;
 
 RenderSystem::RenderSystem(SDL_Window& window,
-                           SDL_Surface& surface,
                            Logger* logger,
-                           std::vector<Entity>& entities,
                            Manager<RenderComponent>& render_component_manager,
                            Manager<PositionComponent>& position_component_manager)
     // TODO: pass in as params
     : renderer(
           SDL_CreateRenderer(&window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))
-    , surface(&surface)
     , logger(logger)
     , render_component_manager(render_component_manager)
     , position_component_manager(position_component_manager)
-    , entities(entities)
 {
     if (renderer == nullptr)
     {

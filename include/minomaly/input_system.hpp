@@ -13,7 +13,7 @@ class InputSystem final : public ISystem
 
 public:
     InputSystem();
-    ~InputSystem();
+    ~InputSystem() override;
 
     virtual void update() override;
 

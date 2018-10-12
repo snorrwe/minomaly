@@ -43,9 +43,7 @@ void Minomaly::init()
     create_system<InputSystem>();
     auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
     create_system<RenderSystem>(*window_system->get_window(),
-                                *window_system->get_surface(),
                                 log_manager->get_logger("render_system"),
-                                entities,
                                 *get_or_create_manager<Manager<RenderComponent>>(),
                                 *get_or_create_manager<Manager<PositionComponent>>());
 }
