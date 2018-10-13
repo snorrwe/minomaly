@@ -42,7 +42,9 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update()
 {
     logger->debug("RenderSystem update starting...");
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
+    logger->debug("Draw RenderComponents");
     render_component_manager.iter([this](auto entity, auto& render_component) {
         auto position = position_component_manager.get_component(entity);
         assert(position != nullptr);
@@ -51,6 +53,7 @@ void RenderSystem::update()
         SDL_RenderCopy(
             renderer, render_component.texture, &render_component.source, &render_component.dest);
     });
+    logger->debug("RenderPresent");
     SDL_RenderPresent(renderer);
     logger->debug("RenderSystem update finished");
 }
