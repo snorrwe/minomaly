@@ -44,7 +44,6 @@ public:
     void start() override
     {
         logger->info("Starting ExampleSystem");
-        logger->info("Creating {} components", N_COMPONENTS);
 
         position_component_manager = engine.get_or_create_manager<Manager<PositionComponent>>();
         assert(position_component_manager != nullptr);
@@ -52,6 +51,8 @@ public:
         auto render_system = engine.get_system<RenderSystem>();
         render_system->reserve(N_COMPONENTS);
         auto texture = render_system->load_texture(".data/boii.png");
+
+        logger->info("Creating {} renderable components + the same number of garbage components", N_COMPONENTS / 2);
         for (auto i = 0; i < N_COMPONENTS; ++i)
         {
             auto const& entity = engine.add_entity();
