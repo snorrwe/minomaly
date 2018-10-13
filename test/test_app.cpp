@@ -7,7 +7,7 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 1000*1000;
+constexpr size_t N_COMPONENTS = 1000*100;
 constexpr size_t WORLD_W = 800;
 constexpr size_t WORLD_H = 600;
 
