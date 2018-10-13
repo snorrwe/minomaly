@@ -45,11 +45,20 @@ void RenderSystem::update()
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
     logger->debug("Draw RenderComponents");
-    render_component_manager.iter([this](auto entity, auto& render_component) {
-        auto position = position_component_manager.get_component(entity);
-        assert(position != nullptr);
-        render_component.dest.x = position->x;
-        render_component.dest.y = position->y;
+    auto& position_components = position_component_manager.get_components();
+    auto current_position = position_components.begin();
+    render_component_manager.iter([&, this](auto entity, auto& render_component) {
+        // Zip render and position components
+        while(std::get<0>(*current_position) != entity) {
+            ++current_position;
+            assert(current_position != position_components.end());
+        }
+        assert(current_position != position_components.end());
+
+        auto position = std::get<1>(*current_position);
+
+        render_component.dest.x = position.x;
+        render_component.dest.y = position.y;
         SDL_RenderCopy(
             renderer, render_component.texture, &render_component.source, &render_component.dest);
     });

@@ -52,26 +52,24 @@ public:
         auto render_system = engine.get_system<RenderSystem>();
         render_system->reserve(N_COMPONENTS);
         auto texture = render_system->load_texture(".data/boii.png");
-        for (auto i = 1; i < N_COMPONENTS; i+=2)
-        {
-            // Bunch of not renderable entities
-            engine.add_entity();
-        }
-        for (auto i = 0; i < N_COMPONENTS; i+=2)
-        // for (auto i = 0; i < N_COMPONENTS; ++i)
+        for (auto i = 0; i < N_COMPONENTS; ++i)
         {
             auto const& entity = engine.add_entity();
+            if(i % 2 == 0) 
+            {
+                // Every second component is renderable
+                auto components = render_system->create_renderable_entity(entity);
+                components.position.x = 0;
+                components.position.y = 0;
+                components.render.texture = texture;
+                components.render.source.x = 0;
+                components.render.source.y = 0;
+                components.render.source.w = 20;
+                components.render.source.h = 20;
+                components.render.dest.w = 20;
+                components.render.dest.h = 20;
+            }
 
-            auto components = render_system->create_renderable_entity(entity);
-            components.position.x = 0;
-            components.position.y = 0;
-            components.render.texture = texture;
-            components.render.source.x = 0;
-            components.render.source.y = 0;
-            components.render.source.w = 20;
-            components.render.source.h = 20;
-            components.render.dest.w = 20;
-            components.render.dest.h = 20;
         }
         logger->info("ExampleSystem has started successfully");
     }

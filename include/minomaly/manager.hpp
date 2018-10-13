@@ -59,8 +59,7 @@ public:
 
     /// Get a pointer to the component of the given id
     /// Return `nullptr` if no component by the given id exists
-    /// Note: Removing components has a negative effect on the performance of `get_component`
-    /// TODO: fix / ease this issue
+    /// TODO: fix / ease performance
     TComponent* get_component(EntityId id)
     {
         if (id < front || id > back)
@@ -68,8 +67,7 @@ public:
             // out of bounds
             return nullptr;
         }
-        auto avg_step = components.size() - (back - front);
-        auto guess = components.rbegin() + (avg_step*(back - id));
+        auto guess = components.rbegin();
         auto end = components.rend();
         auto result = std::find_if(guess, end, [id](auto const& component) {
             return std::get<0>(component) == id;
