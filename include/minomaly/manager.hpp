@@ -6,6 +6,8 @@
 #include <tuple>
 #include <vector>
 
+#include <iostream>
+
 namespace mino
 {
 /// Manages Component memory and lifetimes
@@ -25,6 +27,8 @@ class Manager : public IManager
     using TComponentContainer = std::vector<TInnerComponent>;
 
     TComponentContainer components; // TODO: flatmap?
+    EntityId front = 0;
+    EntityId back = 0;
 
 public:
     void reserve(size_t size) override
@@ -33,17 +37,24 @@ public:
     }
 
     /// Add a component to the entity by `id` and return a reference to it
+    /// This method keeps the inner storage of components sorted by their entity ids
+    /// When using it on a range of `entities` sort the range first for optimal performance
     TComponent& add_component(EntityId const id)
     {
-        // "Only a single component is allowed per entity"
-        assert(components.end() ==
-               find_if(components.begin(), components.end(), [id](auto const& component) {
-                   return std::get<0>(component) == id;
-               }));
-        components.emplace_back();
-        auto& result = components.back();
-        std::get<0>(result) = id;
-        return std::get<1>(result);
+        auto position = std::find_if(
+            components.rbegin(),
+            components.rend(), 
+            [id](auto const& component) {
+                assert(std::get<0>(component) != id);
+                return std::get<0>(component) < id;
+            }
+        );
+        auto len = components.rend() - position;
+        auto result = components.emplace(components.begin() + len);
+        std::get<0>(*result) = id;
+        front = std::get<0>(components.front());
+        back = std::get<0>(components.back());
+        return std::get<1>(*result);
     }
 
     /// Get a pointer to the component of the given id
@@ -52,15 +63,18 @@ public:
     /// TODO: fix / ease this issue
     TComponent* get_component(EntityId id)
     {
-        auto guess = components.rbegin();
-        if (id < components.size())
+        if (id < front || id > back)
         {
-            guess += components.size() - 1 - id;
+            // out of bounds
+            return nullptr;
         }
-        auto result = std::find_if(guess, components.rend(), [id](auto const& component) {
+        auto avg_step = components.size() - (back - front);
+        auto guess = components.rbegin() + (avg_step*(back - id));
+        auto end = components.rend();
+        auto result = std::find_if(guess, end, [id](auto const& component) {
             return std::get<0>(component) == id;
         });
-        if (result != components.rend())
+        if (result != end)
         {
             return &std::get<1>(*result);
         }
@@ -95,6 +109,8 @@ public:
         {
             components.erase(removed);
         }
+        front = std::get<0>(components.front());
+        back = std::get<0>(components.back());
         return result;
     }
 
