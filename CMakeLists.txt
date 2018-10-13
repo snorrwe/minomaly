@@ -32,15 +32,19 @@ set(SILENCED_WARNINGS -Wno-pragmas
                       -Wno-deprecated-declarations
                       -Wno-c++17-extensions
                       -Wunknown-warning-option)
+
+set(MINO_COMPILE_OPTIONS "")
 if(MSVC)
     if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") # LLVM toolchain support
-        target_compile_options(${MINOMALY} PRIVATE /WX ${SILENCED_WARNINGS})
+        set(MINO_COMPILE_OPTIONS /WX ${SILENCED_WARNINGS})
     else()
-        target_compile_options(${MINOMALY} PRIVATE /WX)
+        set(MINO_COMPILE_OPTIONS /WX)
     endif()
 else(MSVC)
-    target_compile_options(${MINOMALY} PRIVATE -Wall -Wextra -pedantic -Werror ${SILENCED_WARNINGS})
+    set(MINO_COMPILE_OPTIONS -Wall -Wextra -pedantic -Werror ${SILENCED_WARNINGS})
 endif(MSVC)
+
+target_compile_options(${MINOMALY} PRIVATE ${MINO_COMPILE_OPTIONS})
 
 #[ SDL ]
 
@@ -109,7 +113,7 @@ target_link_libraries(${MINOMALY}
 add_executable(app ${PROJECT_SOURCE_DIR}/test/test_app.cpp)
 set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
-target_compile_options(app PRIVATE /WX ${SILENCED_WARNINGS})
+target_compile_options(app PRIVATE ${MINO_COMPILE_OPTIONS})
 target_link_libraries(app PRIVATE ${MINOMALY})
 COPY_SDL_DLLS(app)
 # Copy the assets next to the executable and also the parent directory
