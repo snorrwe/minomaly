@@ -109,6 +109,7 @@ target_link_libraries(${MINOMALY}
 add_executable(app ${PROJECT_SOURCE_DIR}/test/test_app.cpp)
 set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
+target_compile_options(app PRIVATE /WX ${SILENCED_WARNINGS})
 target_link_libraries(app PRIVATE ${MINOMALY})
 COPY_SDL_DLLS(app)
 # Copy the assets next to the executable and also the parent directory

@@ -1,3 +1,4 @@
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include "minomaly/manager.hpp"
 #include "minomaly/minomaly.hpp"
 #include "minomaly/render_system.hpp"
@@ -6,9 +7,9 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 1000;
-const size_t WORLD_W = 800;
-const size_t WORLD_H = 600;
+constexpr size_t N_COMPONENTS = 1000*1000;
+constexpr size_t WORLD_W = 800;
+constexpr size_t WORLD_H = 600;
 
 class ExampleSystem final : public ISystem
 {
@@ -97,8 +98,7 @@ int main(int, char**)
 
     // Initialize
     auto engine = Minomaly();
-    auto system = engine.create_system<ExampleSystem>(engine);
-    assert(system != nullptr);
+    engine.create_system<ExampleSystem>(engine);
 
     engine.run();
 
