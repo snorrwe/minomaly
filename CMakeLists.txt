@@ -30,8 +30,7 @@ set(SILENCED_WARNINGS -Wno-pragmas
                       -Wno-unused-command-line-argument
                       -Wno-unknown-argument
                       -Wno-deprecated-declarations
-                      -Wno-c++17-extensions
-                      -Wunknown-warning-option)
+                      -Wno-c++17-extensions)
 
 set(MINO_COMPILE_OPTIONS "")
 if(MSVC)
