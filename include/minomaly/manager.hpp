@@ -6,8 +6,6 @@
 #include <tuple>
 #include <vector>
 
-#include <iostream>
-
 namespace mino
 {
 /// Manages Component memory and lifetimes
@@ -15,11 +13,11 @@ class IManager
 {
 public:
     virtual ~IManager() = default;
-    /// Reserve space for n >= 0 components
     virtual void reserve(size_t size) = 0;
     virtual bool remove_component(EntityId id) = 0;
 };
 
+/// Implementation of a concrete `IManager`
 template <typename TComponent>
 class Manager : public IManager
 {
