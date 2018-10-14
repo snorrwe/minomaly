@@ -41,8 +41,9 @@ build_script:
   - cmake .. -GNinja -DCMAKE_CXX_COMPILER=clang-cl
   - cmake --build . --config %CONFIGURATION%
 
-# test_script:
-  # - cd C:\projects\minomaly\bin
+test_script:
+  - cd C:\projects\minomaly\bin
+  - tests.exe
 
 # Only build interesting files
 only_commits:
