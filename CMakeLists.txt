@@ -109,6 +109,25 @@ target_link_libraries(${MINOMALY}
 
 #[ Tests ]
 
+#[ Gtest ]
+
+find_package (Threads)
+set(GTEST_ROOT_DIR  "${PROJECT_SOURCE_DIR}/external/googletest")
+include_directories("${GTEST_ROOT_DIR}/googletest" "${GTEST_ROOT_DIR}/googletest/include")
+add_library(gtest STATIC "${GTEST_ROOT_DIR}/googletest/src/gtest-all.cc"
+                         "${GTEST_ROOT_DIR}/googletest/src/gtest_main.cc")
+set_property(TARGET gtest PROPERTY CXX_STANDARD 11)
+set_property(TARGET gtest PROPERTY CXX_STANDARD_REQUIRED ON)
+
+#[ Test runner ]
+
+add_executable(tests "${PROJECT_SOURCE_DIR}/test/main.cpp")
+target_link_libraries(tests gtest ${MINOMALY} ${CMAKE_THREAD_LIBS_INIT})
+set_property(TARGET tests PROPERTY CXX_STANDARD 17)
+set_property(TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON)
+
+#[ Test app ]
+
 add_executable(app ${PROJECT_SOURCE_DIR}/test/test_app.cpp)
 set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)

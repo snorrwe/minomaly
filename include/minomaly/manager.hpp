@@ -14,6 +14,7 @@ class IManager
 public:
     virtual ~IManager() = default;
     virtual void reserve(size_t size) = 0;
+    virtual size_t size() const = 0;
     virtual bool remove_component(EntityId id) = 0;
 };
 
@@ -31,6 +32,8 @@ class Manager : public IManager
 public:
     /// Reserve memory for `size` >= 0 components
     void reserve(size_t size) override;
+
+    size_t size() const override;
 
     /// Add a component to the entity by `id` and return a reference to it
     /// This method keeps the inner storage of components sorted by their entity ids
@@ -154,5 +157,12 @@ typename Manager<T>::TComponentContainer const& Manager<T>::get_components() con
 {
     return components;
 }
+
+template <typename T>
+size_t Manager<T>::size() const
+{
+    return components.size();
+}
+
 } // namespace mino
 
