@@ -42,7 +42,7 @@ build_script:
   - cmake --build . --config %CONFIGURATION%
 
 test_script:
-  - cd C:\projects\minomaly\bin
+  - cd C:\projects\minomaly\build
   - tests.exe
 
 # Only build interesting files
