@@ -109,6 +109,8 @@ target_link_libraries(${MINOMALY}
 
 #[ Tests ]
 
+enable_testing()
+
 #[ Gtest ]
 
 find_package (Threads)
@@ -126,6 +128,8 @@ add_executable(tests "${PROJECT_SOURCE_DIR}/test/test_manager.cpp"
 target_link_libraries(tests gtest ${MINOMALY} ${CMAKE_THREAD_LIBS_INIT})
 set_property(TARGET tests PROPERTY CXX_STANDARD 17)
 set_property(TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON)
+
+add_test(NAME run-all-tests COMMAND tests)
 
 #[ Test app ]
 
