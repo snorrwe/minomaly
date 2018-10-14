@@ -64,7 +64,7 @@ TEST_F(ManagerTest, CanRetrieveComponent)
 TEST_F(ManagerTest, CanRetrieveCorrectComponentById)
 {
 
-    for (size_t i = 0; i < 10; ++i)
+    for (unsigned i = 0; i < 10; ++i)
     {
         manager.add_component(EntityId{i});
     }
@@ -91,7 +91,7 @@ TEST_F(ManagerTest, CanRetrieveCorrectComponentById)
 TEST_F(ManagerTest, GetComponentReturnsNullIfNoComponentByIdExists)
 {
 
-    for (size_t i = 0; i < 10; ++i)
+    for (unsigned i = 0; i < 10; ++i)
     {
         manager.add_component(EntityId{i});
     }
@@ -122,7 +122,7 @@ TEST_F(ManagerTest, GetOrAddComponentWorksAsExpected)
 
 TEST_F(ManagerTest, RemoveComponentWorksAsIntended)
 {
-    for (size_t i = 0; i < 10; ++i)
+    for (unsigned i = 0; i < 10; ++i)
     {
         manager.add_component(EntityId{i});
     }
