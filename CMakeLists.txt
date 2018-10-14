@@ -121,14 +121,15 @@ set_property(TARGET gtest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 #[ Test runner ]
 
-add_executable(tests "${PROJECT_SOURCE_DIR}/test/main.cpp")
-target_link_libraries(tests gtest ${MINOMALY} ${CMAKE_THREAD_LIBS_INIT})
+add_executable(tests "${PROJECT_SOURCE_DIR}/test/test_manager.cpp"
+    )
+target_link_libraries(tests gtest_main ${MINOMALY} ${CMAKE_THREAD_LIBS_INIT})
 set_property(TARGET tests PROPERTY CXX_STANDARD 17)
 set_property(TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON)
 
 #[ Test app ]
 
-add_executable(app ${PROJECT_SOURCE_DIR}/test/test_app.cpp)
+add_executable(app "${PROJECT_SOURCE_DIR}/test/test_app.cpp")
 set_property(TARGET app PROPERTY CXX_STANDARD 17)
 set_property(TARGET app PROPERTY CXX_STANDARD_REQUIRED ON)
 target_compile_options(app PRIVATE ${MINO_COMPILE_OPTIONS})
