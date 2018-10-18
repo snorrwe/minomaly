@@ -1,8 +1,8 @@
 #include "minomaly/minomaly.hpp"
-#include "minomaly/input_system.hpp"
-#include "minomaly/render_system.hpp"
-#include "minomaly/sdl_subsystems.hpp"
-#include "minomaly/window_system.hpp"
+#include "minomaly/system/input_system.hpp"
+#include "minomaly/system/render_system.hpp"
+#include "minomaly/system/sdl_subsystems.hpp"
+#include "minomaly/system/window_system.hpp"
 #include <algorithm>
 #include <chrono>
 

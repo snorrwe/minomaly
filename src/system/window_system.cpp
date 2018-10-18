@@ -1,4 +1,4 @@
-#include "minomaly/window_system.hpp"
+#include "minomaly/system/window_system.hpp"
 #include "SDL.h"
 #include <iostream>
 #include <stdexcept>

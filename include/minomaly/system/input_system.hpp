@@ -15,7 +15,7 @@ public:
     InputSystem();
     ~InputSystem() override;
 
-    virtual void update() override;
+    void update() override;
 
     template <typename TFun>
     void iter_events(TFun&& callback);

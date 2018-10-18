@@ -1,7 +1,7 @@
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include "minomaly/manager.hpp"
 #include "minomaly/minomaly.hpp"
-#include "minomaly/render_system.hpp"
+#include "minomaly/system/render_system.hpp"
 #include <cassert>
 #include <random>
 

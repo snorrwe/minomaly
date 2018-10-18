@@ -8,11 +8,11 @@ project(${MINOMALY} VERSION 0.1.0 LANGUAGES CXX)
 
 add_library(${MINOMALY} STATIC
     ${PROJECT_SOURCE_DIR}/src/minomaly.cpp
-    ${PROJECT_SOURCE_DIR}/src/window_system.cpp
-    ${PROJECT_SOURCE_DIR}/src/sdl_subsystems.cpp
-    ${PROJECT_SOURCE_DIR}/src/input_system.cpp
+    ${PROJECT_SOURCE_DIR}/src/system/window_system.cpp
+    ${PROJECT_SOURCE_DIR}/src/system/sdl_subsystems.cpp
+    ${PROJECT_SOURCE_DIR}/src/system/input_system.cpp
     ${PROJECT_SOURCE_DIR}/src/logger.cpp
-    ${PROJECT_SOURCE_DIR}/src/render_system.cpp
+    ${PROJECT_SOURCE_DIR}/src/system/render_system.cpp
     )
 target_include_directories(${MINOMALY}
     PUBLIC

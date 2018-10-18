@@ -1,8 +1,8 @@
-#include "minomaly/render_system.hpp"
+#include "minomaly/system/render_system.hpp"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "minomaly/minomaly.hpp"
-#include "minomaly/render_component.hpp"
+#include "minomaly/component/render_component.hpp"
 #include <string>
 
 using namespace mino;

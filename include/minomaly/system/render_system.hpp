@@ -1,9 +1,9 @@
 #pragma once
-#include "entity.hpp"
-#include "logger.hpp"
-#include "manager.hpp"
-#include "position_component.hpp"
-#include "render_component.hpp"
+#include "minomaly/component/position_component.hpp"
+#include "minomaly/component/render_component.hpp"
+#include "minomaly/entity.hpp"
+#include "minomaly/logger.hpp"
+#include "minomaly/manager.hpp"
 #include "system.hpp"
 #include <iosfwd>
 #include <unordered_map>
@@ -41,9 +41,9 @@ public:
     ~RenderSystem() override;
 
     RenderSystem(RenderSystem const&) = delete;
-    RenderSystem(RenderSystem &&) = delete;
+    RenderSystem(RenderSystem&&) = delete;
     RenderSystem& operator=(RenderSystem const&) = delete;
-    RenderSystem& operator=(RenderSystem &&) = delete;
+    RenderSystem& operator=(RenderSystem&&) = delete;
 
     void update() override;
 

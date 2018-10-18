@@ -1,4 +1,4 @@
-#include "minomaly/input_system.hpp"
+#include "minomaly/system/input_system.hpp"
 
 using namespace mino;
 
