@@ -1,16 +1,17 @@
 #pragma once
 #include <array>
 #include <cassert>
+#include <iostream>
 
 namespace mino
 {
-template <uint16_t _cols, uint16_t _rows, typename TValue = float>
+template <size_t _rows, size_t _cols, typename TValue = float>
 class Matrix
 {
 
 public:
-    using Self = Matrix<_cols, _rows, TValue>;
-    using ValueContainer = std::array<TValue, _cols * _rows>;
+    using Self = Matrix<_rows, _cols, TValue>;
+    using ValueContainer = std::array<TValue, _rows * _cols>;
     using ValuesIterator = typename ValueContainer::iterator;
     using ValuesConstIterator = typename ValueContainer::const_iterator;
 
@@ -27,12 +28,12 @@ public:
     constexpr Matrix& operator=(Matrix const&) = default;
     constexpr Matrix& operator=(Matrix&&) = default;
 
-    constexpr auto columns() const -> uint16_t;
-    constexpr auto rows() const -> uint16_t;
+    constexpr auto columns() const -> size_t;
+    constexpr auto rows() const -> size_t;
     constexpr auto size() const -> size_t;
 
-    constexpr auto at(uint16_t col, uint16_t row) -> TValue&;
-    constexpr auto at(uint16_t col, uint16_t row) const -> TValue const&;
+    constexpr auto at(size_t col, size_t row) -> TValue&;
+    constexpr auto at(size_t col, size_t row) const -> TValue const&;
 
     constexpr auto begin() -> ValuesIterator;
     constexpr auto begin() const -> ValuesConstIterator;
@@ -40,87 +41,98 @@ public:
     constexpr auto end() -> ValuesIterator;
     constexpr auto end() const -> ValuesConstIterator;
 
+    template <size_t other_rows>
+    constexpr auto dot(Matrix<_cols, other_rows, TValue> const& other) const
+        -> Matrix<_rows, other_rows, TValue>;
+    template <size_t other_rows>
+    constexpr auto dot(Matrix<_cols, other_rows, TValue> const& other,
+                       Matrix<_rows, other_rows, TValue>& out) const -> void;
+
     constexpr auto operator+(Self const& other) const -> Self;
     constexpr auto operator+=(Self const& other) -> Self&;
 
     constexpr auto operator-(Self const& other) const -> Self;
     constexpr auto operator-=(Self const& other) -> Self&;
 
-private:
-    constexpr TValue& _at(uint16_t col, uint16_t row);
+    constexpr auto operator==(Self const& other) const -> bool;
 
+private:
     ValueContainer values;
 };
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr uint16_t Matrix<_cols, _rows, TValue>::columns() const
-{
-    return _cols;
-}
-
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr uint16_t Matrix<_cols, _rows, TValue>::rows() const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr size_t Matrix<_rows, _cols, TValue>::columns() const
 {
     return _rows;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr size_t Matrix<_cols, _rows, TValue>::size() const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr size_t Matrix<_rows, _cols, TValue>::rows() const
 {
-    return _cols * _rows;
+    return _cols;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr TValue& Matrix<_cols, _rows, TValue>::at(uint16_t col, uint16_t row)
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr size_t Matrix<_rows, _cols, TValue>::size() const
 {
-    return _at(col, row);
+    return _rows * _cols;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr TValue const& Matrix<_cols, _rows, TValue>::at(uint16_t col, uint16_t row) const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr TValue& Matrix<_rows, _cols, TValue>::at(size_t col, size_t row)
 {
-    return _at(col, row);
+    assert(col < columns());
+    assert(row < rows());
+    return values[row + col * rows()];
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr typename Matrix<_cols, _rows, TValue>::ValuesIterator
-Matrix<_cols, _rows, TValue>::begin()
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr TValue const& Matrix<_rows, _cols, TValue>::at(size_t col, size_t row) const
+{
+    assert(col < columns());
+    assert(row < rows());
+    return values[row + col * rows()];
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr typename Matrix<_rows, _cols, TValue>::ValuesIterator
+Matrix<_rows, _cols, TValue>::begin()
 {
     return values.begin();
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr typename Matrix<_cols, _rows, TValue>::ValuesConstIterator
-Matrix<_cols, _rows, TValue>::begin() const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr typename Matrix<_rows, _cols, TValue>::ValuesConstIterator
+Matrix<_rows, _cols, TValue>::begin() const
 {
     return values.begin();
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr typename Matrix<_cols, _rows, TValue>::ValuesIterator Matrix<_cols, _rows, TValue>::end()
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr typename Matrix<_rows, _cols, TValue>::ValuesIterator Matrix<_rows, _cols, TValue>::end()
 {
     return values.end();
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr typename Matrix<_cols, _rows, TValue>::ValuesConstIterator
-Matrix<_cols, _rows, TValue>::end() const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr typename Matrix<_rows, _cols, TValue>::ValuesConstIterator
+Matrix<_rows, _cols, TValue>::end() const
 {
     return values.end();
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr Matrix<_cols, _rows, TValue> Matrix<_cols, _rows, TValue>::
-operator+(Matrix<_cols, _rows, TValue> const& other) const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr Matrix<_rows, _cols, TValue> Matrix<_rows, _cols, TValue>::
+operator+(Matrix<_rows, _cols, TValue> const& other) const
 {
     auto result = Matrix{*this};
     result += other;
     return result;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr Matrix<_cols, _rows, TValue>& Matrix<_cols, _rows, TValue>::
-operator+=(Matrix<_cols, _rows, TValue> const& other)
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr Matrix<_rows, _cols, TValue>& Matrix<_rows, _cols, TValue>::
+operator+=(Matrix<_rows, _cols, TValue> const& other)
 {
     auto i = this->values.begin();
     auto j = other.values.begin();
@@ -131,18 +143,18 @@ operator+=(Matrix<_cols, _rows, TValue> const& other)
     return *this;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr Matrix<_cols, _rows, TValue> Matrix<_cols, _rows, TValue>::
-operator-(Matrix<_cols, _rows, TValue> const& other) const
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr Matrix<_rows, _cols, TValue> Matrix<_rows, _cols, TValue>::
+operator-(Matrix<_rows, _cols, TValue> const& other) const
 {
     auto result = Matrix{*this};
     result -= other;
     return result;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr Matrix<_cols, _rows, TValue>& Matrix<_cols, _rows, TValue>::
-operator-=(Matrix<_cols, _rows, TValue> const& other)
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr Matrix<_rows, _cols, TValue>& Matrix<_rows, _cols, TValue>::
+operator-=(Matrix<_rows, _cols, TValue> const& other)
 {
     auto i = this->values.begin();
     auto j = other.values.begin();
@@ -153,12 +165,62 @@ operator-=(Matrix<_cols, _rows, TValue> const& other)
     return *this;
 }
 
-template <uint16_t _cols, uint16_t _rows, typename TValue>
-constexpr TValue& Matrix<_cols, _rows, TValue>::_at(uint16_t col, uint16_t row)
+template <size_t _rows, size_t _cols, typename TValue>
+template <size_t other_rows>
+constexpr void Matrix<_rows, _cols, TValue>::dot(Matrix<_cols, other_rows, TValue> const& other,
+                                                 Matrix<_rows, other_rows, TValue>& out) const
 {
-    assert(col < columns());
-    assert(row < rows());
-    return values[col + row * columns()];
+    for (auto r = 0; r < _rows; ++r)
+    {
+        for (auto c = 0; c < other_rows; ++c)
+        {
+            out.at(r, c) = 0;
+            for (auto k = 0; k < _cols; ++k)
+            {
+                out.at(r, c) += at(r, k) * other.at(k, c);
+            }
+        }
+    }
 }
+template <size_t _rows, size_t _cols, typename TValue>
+template <size_t other_rows>
+constexpr Matrix<_rows, other_rows, TValue>
+Matrix<_rows, _cols, TValue>::dot(Matrix<_cols, other_rows, TValue> const& other) const
+{
+    Matrix<_rows, other_rows> result{};
+    dot(other, result);
+    return result;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+constexpr auto Matrix<_rows, _cols, TValue>::operator==(Self const& other) const -> bool
+{
+    auto i = this->begin();
+    auto j = other.begin();
+    for (; i != this->end(); ++i, ++j)
+    {
+        if (*i != *j)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+std::ostream& operator<<(std::ostream& os, Matrix<_rows, _cols, TValue> const& matrix)
+{
+    for (auto r = 0; r < _rows; ++r)
+    {
+        os << matrix.at(r, 0);
+        for (auto c = 1; c < _cols; ++c)
+        {
+            os << ' ' << matrix.at(r, c);
+        }
+        os << '\n';
+    }
+    return os;
+}
+
 } // namespace mino
 

@@ -15,17 +15,16 @@ TEST(Matrix, CanCreateInConstexprContext)
 TEST(Matrix, CanAccessRightElements)
 {
     /*
-     | 0  1 |
-     | 2  3 |
-     | 4  5 |
+     | 0  1  2 |
+     | 3  4  5 |
     */
     auto m = Matrix<2, 3>{{0, 1, 2, 3, 4, 5}};
 
     EXPECT_EQ(m.at(0, 0), 0);
-    EXPECT_EQ(m.at(1, 0), 1);
-    EXPECT_EQ(m.at(0, 1), 2);
-    EXPECT_EQ(m.at(1, 1), 3);
-    EXPECT_EQ(m.at(0, 2), 4);
+    EXPECT_EQ(m.at(0, 1), 1);
+    EXPECT_EQ(m.at(0, 2), 2);
+    EXPECT_EQ(m.at(1, 0), 3);
+    EXPECT_EQ(m.at(1, 1), 4);
     EXPECT_EQ(m.at(1, 2), 5);
 }
 
@@ -52,6 +51,18 @@ TEST(Matrix, Subtraction)
     {
         EXPECT_EQ(*i, 0);
     }
+}
+
+TEST(Matrix, SimpleDot)
+{
+    auto m1 = Matrix<2, 3>{{0, 1, 2, 3, 4, 5}};
+    auto m2 = Matrix<3, 4>{{0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5}};
+
+    auto result = m1.dot(m2);
+
+    auto expected = Matrix<2, 4>{{8, 11, 8, 11, 26, 38, 26, 38}};
+
+    ASSERT_EQ(result, expected);
 }
 } // namespace
 
