@@ -182,6 +182,7 @@ constexpr void Matrix<_rows, _cols, TValue>::dot(Matrix<_cols, other_rows, TValu
         }
     }
 }
+
 template <size_t _rows, size_t _cols, typename TValue>
 template <size_t other_rows>
 constexpr Matrix<_rows, other_rows, TValue>

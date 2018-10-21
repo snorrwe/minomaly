@@ -24,7 +24,7 @@ struct ExampleComponent
 class ManagerTest : public testing::Test
 {
 protected:
-    Manager<ExampleComponent> manager = Manager<ExampleComponent>{};
+    Manager<ExampleComponent> manager {};
 
 public:
     void SetUp() override
