@@ -8,8 +8,8 @@ using namespace mino;
 TEST(Matrix, CanCreateInConstexprContext)
 {
     constexpr auto matrix = Matrix<2, 3>{};
-    EXPECT_EQ(matrix.columns(), 2);
-    EXPECT_EQ(matrix.rows(), 3);
+    EXPECT_EQ(matrix.rows(), 2);
+    EXPECT_EQ(matrix.columns(), 3);
 }
 
 TEST(Matrix, CanAccessRightElements)

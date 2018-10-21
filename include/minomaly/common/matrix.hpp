@@ -63,13 +63,13 @@ private:
 template <size_t _rows, size_t _cols, typename TValue>
 constexpr size_t Matrix<_rows, _cols, TValue>::columns() const
 {
-    return _rows;
+    return _cols;
 }
 
 template <size_t _rows, size_t _cols, typename TValue>
 constexpr size_t Matrix<_rows, _cols, TValue>::rows() const
 {
-    return _cols;
+    return _rows;
 }
 
 template <size_t _rows, size_t _cols, typename TValue>
@@ -79,19 +79,19 @@ constexpr size_t Matrix<_rows, _cols, TValue>::size() const
 }
 
 template <size_t _rows, size_t _cols, typename TValue>
-constexpr TValue& Matrix<_rows, _cols, TValue>::at(size_t col, size_t row)
+constexpr TValue& Matrix<_rows, _cols, TValue>::at(size_t row, size_t col)
 {
     assert(col < columns());
     assert(row < rows());
-    return values[row + col * rows()];
+    return values[col + row * columns()];
 }
 
 template <size_t _rows, size_t _cols, typename TValue>
-constexpr TValue const& Matrix<_rows, _cols, TValue>::at(size_t col, size_t row) const
+constexpr TValue const& Matrix<_rows, _cols, TValue>::at(size_t row, size_t col) const
 {
     assert(col < columns());
     assert(row < rows());
-    return values[row + col * rows()];
+    return values[col + row * columns()];
 }
 
 template <size_t _rows, size_t _cols, typename TValue>
