@@ -16,7 +16,7 @@ add_library(${MINOMALY} STATIC
     )
 target_include_directories(${MINOMALY}
     PUBLIC
-    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/external/spdlog/include>
     $<INSTALL_INTERFACE:include>
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
@@ -96,7 +96,7 @@ ENDMACRO()
 
 #[ Spdlog ]
 
-include_directories(${PROJECT_SOURCE_DIR}/external/spdlog/include)
+include_directories("${PROJECT_SOURCE_DIR}/external/spdlog/include")
 
 #[ Link external dependencies ]
 
