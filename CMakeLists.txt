@@ -16,17 +16,15 @@ add_library(${MINOMALY} STATIC
     )
 
 target_include_directories (
-    ${MINOMALY}
-    PUBLIC
-    $<BUILD_INTERFACE:  ${PROJECT_SOURCE_DIR}/include
-                        ${PROJECT_SOURCE_DIR}/external/spdlog/include
-                        ${SDL2_INCLUDE_DIRS}
-                        ${SDL2_IMAGE_DIR}/include
-                        ${SDL2_TTF_DIR}/include
-                        ${SDL2_MIXER_DIR}/include
-                        >
-    $<INSTALL_INTERFACE:include>
-    PRIVATE
+${MINOMALY}
+PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/external/spdlog/include
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_DIR}/include
+    ${SDL2_TTF_DIR}/include
+    ${SDL2_MIXER_DIR}/include
+PRIVATE
     ${PROJECT_SOURCE_DIR}/src
 )
 
@@ -110,11 +108,12 @@ include_directories("${PROJECT_SOURCE_DIR}/external/spdlog/include")
 #[ Link external dependencies ]
 
 target_link_libraries(${MINOMALY}
+PUBLIC
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_image.lib
     ${SDL2_MIXER_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_mixer.lib
     ${SDL2_TTF_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2_ttf.lib
-    )
+)
 
 #[ Tests ]
 
@@ -165,3 +164,15 @@ add_custom_command(
     $<TARGET_FILE_DIR:app>/.data
     )
 
+#[ Exports ]
+
+set(MINO_INCLUDES 
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/external/spdlog/include
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_DIR}/include
+    ${SDL2_TTF_DIR}/include
+    ${SDL2_MIXER_DIR}/include
+
+    PARENT_SCOPE
+    )
