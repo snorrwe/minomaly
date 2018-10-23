@@ -14,13 +14,21 @@ add_library(${MINOMALY} STATIC
     ${PROJECT_SOURCE_DIR}/src/logger.cpp
     ${PROJECT_SOURCE_DIR}/src/system/render_system.cpp
     )
-target_include_directories(${MINOMALY}
+
+target_include_directories (
+    ${MINOMALY}
     PUBLIC
-    $<BUILD_INTERFACE: ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/external/spdlog/include>
+    $<BUILD_INTERFACE:  ${PROJECT_SOURCE_DIR}/include
+                        ${PROJECT_SOURCE_DIR}/external/spdlog/include
+                        ${SDL2_INCLUDE_DIRS}
+                        ${SDL2_IMAGE_DIR}/include
+                        ${SDL2_TTF_DIR}/include
+                        ${SDL2_MIXER_DIR}/include
+                        >
     $<INSTALL_INTERFACE:include>
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
-    )
+)
 
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${MINOMALY} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -48,17 +56,18 @@ target_compile_options(${MINOMALY} PRIVATE ${MINO_COMPILE_OPTIONS})
 #[ SDL ]
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(VC_LIB_PATH_SUFFIX lib/x64)
+    set(VC_LIB_PATH_SUFFIX lib/x64 CACHE INTERNAL "")
 else()
-    set(VC_LIB_PATH_SUFFIX lib/x86)
+    set(VC_LIB_PATH_SUFFIX lib/x86 CACHE INTERNAL "")
 endif()
 
 if(WIN32)
-    set(SDL2_ROOT ${PROJECT_SOURCE_DIR}/external/sdl/windows-vs)
-    set(SDL2_DIR ${SDL2_ROOT}/SDL2-2.0.7)
-    set(SDL2_IMAGE_DIR ${SDL2_ROOT}/SDL2_image-2.0.2)
-    set(SDL2_TTF_DIR ${SDL2_ROOT}/SDL2_ttf-2.0.14)
-    set(SDL2_MIXER_DIR ${SDL2_ROOT}/SDL2_mixer-2.0.2)
+    set(SDL2_ROOT ${PROJECT_SOURCE_DIR}/external/sdl/windows-vs CACHE INTERNAL "")
+    set(SDL2_DIR ${SDL2_ROOT}/SDL2-2.0.7 CACHE INTERNAL "")
+    set(SDL2_IMAGE_DIR ${SDL2_ROOT}/SDL2_image-2.0.2 CACHE INTERNAL "")
+    set(SDL2_IMAGE_DIR ${SDL2_IMAGE_DIR} CACHE INTERNAL "")
+    set(SDL2_TTF_DIR ${SDL2_ROOT}/SDL2_ttf-2.0.14 CACHE INTERNAL "")
+    set(SDL2_MIXER_DIR ${SDL2_ROOT}/SDL2_mixer-2.0.2 CACHE INTERNAL "")
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
@@ -71,8 +80,8 @@ include_directories(${SDL2_MIXER_DIR}/include)
 MACRO(COPY_SDL_DLLS name)
     # SDL core
     add_custom_command(TARGET ${name} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${SDL2_DIR}/${VC_LIB_PATH_SUFFIX}/SDL2.dll"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${SDL2_DIR}/${VC_LIB_PATH_SUFFIX}"
         $<TARGET_FILE_DIR:${name}>)
 
     # SDL Image
