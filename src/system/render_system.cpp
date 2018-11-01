@@ -47,15 +47,14 @@ void RenderSystem::update()
     logger->debug("Draw RenderComponents");
     auto& position_components = position_component_manager.get_components();
     auto current_position = position_components.begin();
-    auto positions_end = position_components.end();
     render_component_manager.iter([&, this](auto entity, auto& render_component) {
         // Zip render and position components
         while (std::get<0>(*current_position) != entity)
         {
             ++current_position;
-            assert(current_position != positions_end);
+            assert(current_position != position_components.end());
         }
-        assert(current_position != positions_end);
+        assert(current_position != position_components.end());
 
         auto& position = std::get<1>(*current_position);
         render_component.dest.x = position.x;
