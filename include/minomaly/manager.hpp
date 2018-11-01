@@ -19,13 +19,11 @@ public:
 };
 
 /// Implementation of a concrete `IManager`
-template <typename TComponent>
+template <typename TComponent,
+          typename TComponentContainer = std::vector<std::tuple<EntityId, TComponent>>>
 class Manager : public IManager
 {
-    using TInnerComponent = std::tuple<EntityId, TComponent>;
-    using TComponentContainer = std::vector<TInnerComponent>;
-
-    TComponentContainer components; // TODO: flatmap?
+    TComponentContainer components;
     EntityId front = 0;
     EntityId back = 0;
 
@@ -68,14 +66,14 @@ public:
     /// Get a reference to the component container
     TComponentContainer const& get_components() const;
 };
-template <typename T>
-void Manager<T>::reserve(size_t size)
+template <typename T, typename C>
+void Manager<T, C>::reserve(size_t size)
 {
     components.reserve(size);
 }
 
-template <typename T>
-T& Manager<T>::add_component(EntityId const id)
+template <typename T, typename C>
+T& Manager<T, C>::add_component(EntityId const id)
 {
     auto position =
         std::find_if(components.rbegin(), components.rend(), [id](auto const& component) {
@@ -90,8 +88,8 @@ T& Manager<T>::add_component(EntityId const id)
     return std::get<1>(*result);
 }
 
-template <typename T>
-T* Manager<T>::get_component(EntityId id)
+template <typename T, typename C>
+T* Manager<T, C>::get_component(EntityId id)
 {
     if (id < front || id > back)
     {
@@ -109,8 +107,8 @@ T* Manager<T>::get_component(EntityId id)
     return nullptr;
 }
 
-template <typename T>
-T& Manager<T>::get_or_add_component(EntityId id)
+template <typename T, typename C>
+T& Manager<T, C>::get_or_add_component(EntityId id)
 {
     auto existing = get_component(id);
     if (existing != nullptr)
@@ -120,8 +118,8 @@ T& Manager<T>::get_or_add_component(EntityId id)
     return add_component(id);
 }
 
-template <typename T>
-bool Manager<T>::remove_component(EntityId id)
+template <typename T, typename C>
+bool Manager<T, C>::remove_component(EntityId id)
 {
     auto removed = std::find_if(components.begin(), components.end(), [id](auto const& component) {
         return std::get<0>(component) == id;
@@ -136,9 +134,9 @@ bool Manager<T>::remove_component(EntityId id)
     return result;
 }
 
-template <typename T>
+template <typename T, typename C>
 template <typename TFun>
-void Manager<T>::iter(TFun&& callback)
+void Manager<T, C>::iter(TFun&& callback)
 {
     for (auto& component : components)
     {
@@ -146,20 +144,20 @@ void Manager<T>::iter(TFun&& callback)
     }
 }
 
-template <typename T>
-typename Manager<T>::TComponentContainer& Manager<T>::get_components()
+template <typename T, typename C>
+C& Manager<T, C>::get_components()
 {
     return components;
 }
 
-template <typename T>
-typename Manager<T>::TComponentContainer const& Manager<T>::get_components() const
+template <typename T, typename C>
+C const& Manager<T, C>::get_components() const
 {
     return components;
 }
 
-template <typename T>
-size_t Manager<T>::size() const
+template <typename T, typename C>
+size_t Manager<T, C>::size() const
 {
     return components.size();
 }

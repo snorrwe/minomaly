@@ -41,7 +41,8 @@ void Minomaly::init()
 {
     create_system<SdlSubsystems>();
     create_system<InputSystem>();
-    auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 800, 600, 0);
+    // FIXME let users pass window parameters
+    auto window_system = create_system<WindowSystem>("Minomaly", 0, 0, 1920, 1080, 0);
     create_system<RenderSystem>(*window_system->get_window(),
                                 log_manager->get_logger("render_system"),
                                 *get_or_create_manager<Manager<RenderComponent>>(),

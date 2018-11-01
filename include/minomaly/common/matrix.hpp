@@ -56,6 +56,15 @@ public:
 
     constexpr auto operator==(Self const& other) const -> bool;
 
+    template <typename TOther = TValue>
+    constexpr auto operator*(TOther other) -> Self;
+    template <typename TOther = TValue>
+    constexpr auto operator*=(TOther other) -> Self&;
+    template <typename TOther = TValue>
+    constexpr auto operator/(TOther other) -> Self;
+    template <typename TOther = TValue>
+    constexpr auto operator/=(TOther other) -> Self&;
+
 private:
     ValueContainer values;
 };
@@ -221,6 +230,46 @@ std::ostream& operator<<(std::ostream& os, Matrix<_rows, _cols, TValue> const& m
         os << '\n';
     }
     return os;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+template <typename TOther>
+constexpr auto Matrix<_rows, _cols, TValue>::operator*(TOther other) -> Self
+{
+    Self result{*this};
+    result *= other;
+    return result;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+template <typename TOther>
+constexpr auto Matrix<_rows, _cols, TValue>::operator*=(TOther other) -> Self&
+{
+    for (auto& v : values)
+    {
+        v *= other;
+    }
+    return *this;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+template <typename TOther>
+constexpr auto Matrix<_rows, _cols, TValue>::operator/(TOther other) -> Self
+{
+    Self result{*this};
+    result /= other;
+    return result;
+}
+
+template <size_t _rows, size_t _cols, typename TValue>
+template <typename TOther>
+constexpr auto Matrix<_rows, _cols, TValue>::operator/=(TOther other) -> Self&
+{
+    for (auto& v : values)
+    {
+        v /= other;
+    }
+    return *this;
 }
 
 } // namespace mino

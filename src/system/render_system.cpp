@@ -1,8 +1,8 @@
 #include "minomaly/system/render_system.hpp"
 #include "SDL.h"
 #include "SDL_image.h"
-#include "minomaly/minomaly.hpp"
 #include "minomaly/component/render_component.hpp"
+#include "minomaly/minomaly.hpp"
 #include <string>
 
 using namespace mino;
@@ -23,7 +23,7 @@ RenderSystem::RenderSystem(SDL_Window& window,
         logger->error("RenderSystem could not be created! SDL Error:\n{}", SDL_GetError());
         throw std::runtime_error("RenderSystem could not be created!");
     }
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0x0);
     logger->debug("RenderSystem was initialized successfully");
 }
 
@@ -42,7 +42,7 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update()
 {
     logger->debug("RenderSystem update starting...");
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0x0);
     SDL_RenderClear(renderer);
     logger->debug("Draw RenderComponents");
     auto& position_components = position_component_manager.get_components();
@@ -50,7 +50,8 @@ void RenderSystem::update()
     auto positions_end = position_components.end();
     render_component_manager.iter([&, this](auto entity, auto& render_component) {
         // Zip render and position components
-        while(std::get<0>(*current_position) != entity) {
+        while (std::get<0>(*current_position) != entity)
+        {
             ++current_position;
             assert(current_position != positions_end);
         }
@@ -87,6 +88,7 @@ SDL_Texture* RenderSystem::load_texture(std::string const& name)
     {
         return result->second;
     }
+    logger->debug("Loading image {}", name);
     auto media = IMG_Load(name.c_str());
     if (media == nullptr)
     {
@@ -98,6 +100,7 @@ SDL_Texture* RenderSystem::load_texture(std::string const& name)
     {
         logger->error("Unable to optimize image!\nSDL Error: {}", SDL_GetError());
     }
+    logger->debug("Successfully loaded image {}", name);
     textures.insert(std::make_pair(name, texture));
     return texture;
 }
