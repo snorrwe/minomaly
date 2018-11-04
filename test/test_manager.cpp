@@ -9,7 +9,7 @@ struct ExampleComponent
 {
     size_t id;
 
-    inline static size_t count = 0;
+    static size_t count;
 
     static void reset()
     {
@@ -21,10 +21,12 @@ struct ExampleComponent
     }
 };
 
+size_t ExampleComponent::count = 0;
+
 class ManagerTest : public testing::Test
 {
 protected:
-    Manager<ExampleComponent> manager {};
+    Manager<ExampleComponent> manager{};
 
 public:
     void SetUp() override

@@ -13,7 +13,12 @@ class InputSystem final : public ISystem
 
 public:
     InputSystem();
+    InputSystem(InputSystem const&) = default;
+    InputSystem(InputSystem&&) = default;
     ~InputSystem() override;
+
+    InputSystem& operator=(InputSystem const&) = default;
+    InputSystem& operator=(InputSystem&&) = default;
 
     void update() override;
 

@@ -57,8 +57,8 @@ void RenderSystem::update()
         assert(current_position != position_components.end());
 
         auto& position = std::get<1>(*current_position);
-        render_component.dest.x = position.x;
-        render_component.dest.y = position.y;
+        render_component.dest.x = position.x();
+        render_component.dest.y = position.y();
         SDL_RenderCopy(
             renderer, render_component.texture, &render_component.source, &render_component.dest);
     });

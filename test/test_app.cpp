@@ -7,7 +7,7 @@
 
 using namespace mino;
 
-constexpr size_t N_COMPONENTS = 1000*100;
+constexpr size_t N_COMPONENTS = 1000 * 100;
 constexpr size_t WORLD_W = 800;
 constexpr size_t WORLD_H = 600;
 
@@ -52,16 +52,19 @@ public:
         render_system->reserve(N_COMPONENTS);
         auto texture = render_system->load_texture(".data/boii.png");
 
-        logger->info("Creating {} renderable components + the same number of garbage components", N_COMPONENTS / 2);
-        for (auto i = 0; i < N_COMPONENTS; ++i)
+        logger->info("Creating renderable entities + garbage entities");
+        auto count = 0;
+        for (size_t i = 0; i < N_COMPONENTS; ++i)
         {
             auto const& entity = engine.add_entity();
-            if(i % 2 == 0) 
+            auto s = dist_w(rng);
+            if ((s & 1) == 0)
             {
-                // Every second component is renderable
+                // Roughly every second entity is renderable
+                ++count;
                 auto components = render_system->create_renderable_entity(entity);
-                components.position.x = 0;
-                components.position.y = 0;
+                components.position.x() = 0;
+                components.position.y() = 0;
                 components.render.texture = texture;
                 components.render.source.x = 0;
                 components.render.source.y = 0;
@@ -70,8 +73,8 @@ public:
                 components.render.dest.w = 20;
                 components.render.dest.h = 20;
             }
-
         }
+        logger->info("Created {} renderable and {} garbage entities", count, N_COMPONENTS - count);
         logger->info("ExampleSystem has started successfully");
     }
 
@@ -87,9 +90,9 @@ public:
         else
         {
             logger->info("Randomizing the positions of components");
-            position_component_manager->iter([&](auto, auto& component) {
-                component.x = dist_w(rng);
-                component.y = dist_h(rng);
+            position_component_manager->iter([&](auto, auto& position) {
+                position.x() = dist_w(rng);
+                position.y() = dist_h(rng);
             });
         }
         ++updates;
