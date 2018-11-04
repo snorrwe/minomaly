@@ -16,10 +16,10 @@ public:
     using ValuesConstIterator = typename ValueContainer::const_iterator;
 
     constexpr Matrix() = default;
-    explicit constexpr Matrix(ValueContainer const& values) : values(values)
+    constexpr Matrix(ValueContainer const& values) : values(values)
     {
     }
-    explicit constexpr Matrix(ValueContainer&& values) : values(std::move(values))
+    constexpr Matrix(ValueContainer&& values) : values(std::move(values))
     {
     }
     constexpr Matrix(Matrix const&) = default;

@@ -133,6 +133,7 @@ set_property(TARGET gtest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 add_executable(tests "${PROJECT_SOURCE_DIR}/test/test_manager.cpp"
                      "${PROJECT_SOURCE_DIR}/test/test_matrix.cpp"
+                     "${PROJECT_SOURCE_DIR}/test/test_vector.cpp"
     )
 target_link_libraries(tests gtest ${MINOMALY} ${CMAKE_THREAD_LIBS_INIT})
 set_property(TARGET tests PROPERTY CXX_STANDARD 17)
