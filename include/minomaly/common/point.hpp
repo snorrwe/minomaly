@@ -12,7 +12,11 @@ struct Point : public mino::Matrix<2, 1, int>
     using mino::Matrix<2, 1, int>::operator/;
     using mino::Matrix<2, 1, int>::operator=;
 
-    Point(mino::Matrix<2, 1, int> const& m) : mino::Matrix<2, 1, int>(m)
+    constexpr Point(mino::Matrix<2, 1, int> const& m) : mino::Matrix<2, 1, int>(m)
+    {
+    }
+
+    constexpr Point(int x, int y) : mino::Matrix<2, 1, int>({x, y})
     {
     }
 
