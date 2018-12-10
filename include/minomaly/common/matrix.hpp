@@ -57,11 +57,11 @@ public:
     constexpr auto operator==(Self const& other) const -> bool;
 
     template <typename TOther = TValue>
-    constexpr auto operator*(TOther other) -> Self;
+    constexpr auto operator*(TOther other) const -> Self;
     template <typename TOther = TValue>
     constexpr auto operator*=(TOther other) -> Self&;
     template <typename TOther = TValue>
-    constexpr auto operator/(TOther other) -> Self;
+    constexpr auto operator/(TOther other) const -> Self;
     template <typename TOther = TValue>
     constexpr auto operator/=(TOther other) -> Self&;
 
@@ -234,7 +234,7 @@ std::ostream& operator<<(std::ostream& os, Matrix<_rows, _cols, TValue> const& m
 
 template <size_t _rows, size_t _cols, typename TValue>
 template <typename TOther>
-constexpr auto Matrix<_rows, _cols, TValue>::operator*(TOther other) -> Self
+constexpr auto Matrix<_rows, _cols, TValue>::operator*(TOther other) const -> Self
 {
     Self result{*this};
     result *= other;
@@ -254,7 +254,7 @@ constexpr auto Matrix<_rows, _cols, TValue>::operator*=(TOther other) -> Self&
 
 template <size_t _rows, size_t _cols, typename TValue>
 template <typename TOther>
-constexpr auto Matrix<_rows, _cols, TValue>::operator/(TOther other) -> Self
+constexpr auto Matrix<_rows, _cols, TValue>::operator/(TOther other) const -> Self
 {
     Self result{*this};
     result /= other;

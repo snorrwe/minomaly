@@ -6,6 +6,11 @@ namespace mino
 struct Point : public mino::Matrix<2, 1, int>
 {
     using mino::Matrix<2, 1, int>::Matrix;
+    using mino::Matrix<2, 1, int>::operator*=;
+    using mino::Matrix<2, 1, int>::operator*;
+    using mino::Matrix<2, 1, int>::operator/=;
+    using mino::Matrix<2, 1, int>::operator/;
+    using mino::Matrix<2, 1, int>::operator=;
 
     int& x()
     {
