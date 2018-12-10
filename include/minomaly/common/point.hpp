@@ -12,6 +12,10 @@ struct Point : public mino::Matrix<2, 1, int>
     using mino::Matrix<2, 1, int>::operator/;
     using mino::Matrix<2, 1, int>::operator=;
 
+    Point(mino::Matrix<2, 1, int> const& m) : mino::Matrix<2, 1, int>(m)
+    {
+    }
+
     int& x()
     {
         return at(0, 0);
@@ -32,5 +36,6 @@ struct Point : public mino::Matrix<2, 1, int>
         return at(1, 0);
     }
 };
+
 } // namespace mino
 
